@@ -23,6 +23,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  * This class defines a simple embedded SQL utility class that is designed to
@@ -300,9 +301,34 @@ public class DBproject{
 	}//end readChoice
 
 	public static void AddPlane(DBproject esql) {//1
-	}
 
+	}
+        
 	public static void AddPilot(DBproject esql) {//2
+	    Scanner input = new Scanner(System.in);
+
+	    System.out.println("Enter pilot ID");
+	    int pilotID = input.nextInt();
+	    String clear = input.nextLine(); // remove the \n
+	    System.out.println("Enter pilot full name");
+	    String pilotName = "'";
+	    pilotName += input.nextLine();
+	    pilotName += "'";
+	    System.out.println("Enter pilot nationality");
+	    String pilotNationality = "'";
+	    pilotNationality += input.nextLine();
+	    pilotNationality += "'";
+	    
+	    String query = "INSERT INTO Pilot VALUES (" + Integer.toString(pilotID) 
+		+ "," + pilotName + "," + pilotNationality + ");";
+	    try {
+		esql.executeQuery(query);
+	    }
+	    catch(Exception e) {
+		System.err.println(e.getMessage());
+	    }
+
+	    
 	}
 
 	public static void AddFlight(DBproject esql) {//3
@@ -310,6 +336,22 @@ public class DBproject{
 	}
 
 	public static void AddTechnician(DBproject esql) {//4
+	    Scanner input = new Scanner(System.in);
+	    
+	    System.out.println("Enter technician ID");
+	    int techID = input.nextInt();
+	    String deleteNewline = input.nextLine();
+	    System.out.println("Enter technician full name");
+	    String techName = "'" + input.nextLine() + "'";
+
+	    String query = "INSERT INTO Technician VALUES (" + Integer.toString(techID) + "," 
+		+ techName + ");";
+	    try {
+		esql.executeQuery(query);
+	    }
+	    catch(Exception e) {
+		System.err.println(e.getMessage());
+	    }
 	}
 
 	public static void BookFlight(DBproject esql) {//5

@@ -1,0 +1,3 @@
+SELECT *
+FROM Pilot p
+WHERE p.id = 284;
