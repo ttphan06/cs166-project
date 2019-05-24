@@ -322,7 +322,7 @@ public class DBproject{
 	    String query = "INSERT INTO Pilot VALUES (" + Integer.toString(pilotID) 
 		+ "," + pilotName + "," + pilotNationality + ");";
 	    try {
-		esql.executeQuery(query);
+		esql.executeUpdate(query);
 	    }
 	    catch(Exception e) {
 		System.err.println(e.getMessage());
@@ -340,6 +340,7 @@ public class DBproject{
 	    
 	    System.out.println("Enter technician ID");
 	    int techID = input.nextInt();
+	    System.out.println("you enter: " + techID);
 	    String deleteNewline = input.nextLine();
 	    System.out.println("Enter technician full name");
 	    String techName = "'" + input.nextLine() + "'";
@@ -347,7 +348,7 @@ public class DBproject{
 	    String query = "INSERT INTO Technician VALUES (" + Integer.toString(techID) + "," 
 		+ techName + ");";
 	    try {
-		esql.executeQuery(query);
+		esql.executeUpdate(query);
 	    }
 	    catch(Exception e) {
 		System.err.println(e.getMessage());
@@ -372,5 +373,21 @@ public class DBproject{
 	
 	public static void FindPassengersCountWithStatus(DBproject esql) {//9
 		// Find how many passengers there are with a status (i.e. W,C,R) and list that number.
+	    Scanner input = new Scanner(System.in);
+
+	    System.out.println("Enter flight number");
+	    String flightNum = input.nextLine();
+	    System.out.println("Enter status");
+	    String status = "'" + input.nextLine() + "'";
+
+	    String query = "SELECT COUNT(r.status) FROM Reservation r WHERE r.fid = ";
+	    query += flightNum + "GROUP BY r.status HAVING r.status = " + status + ";";
+
+	    try {
+		System.out.println("Number passenger: " + esql.executeQueryAndReturnResult(query).get(0).get(0));
+	    }
+	    catch (Exception e) {
+		System.err.println(e.getMessage());
+	    }
 	}
 }
