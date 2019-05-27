@@ -359,12 +359,60 @@ public class DBproject{
 
 	public static void AddFlight(DBproject esql) {//3
 		// Given a pilot, plane and flight, adds a flight in the DB
+		
+		try{
+			Scanner Scanner = new Scanner(System.in);
+
+			System.out.println("Flight Number: ");
+			int flightNumber = Scanner.nextInt();
+
+			System.out.println("cost: ");
+			int costOfFlight = Scanner.nextInt();
+
+			System.out.println("number sold: ");
+			int numberOfSold = Scanner.nextInt();
+
+			System.out.println("number of stops: ");
+			int numberOfStops = Scanner.nextInt();
+
+			System.out.println("actual departure date: (MM-dd-yyyy) ");
+			String actualDepartureDate = Scanner.next();
+
+			System.out.println("actual arrival date: (MM-dd-yyyy) ");
+			String actualArrivalDate = Scanner.next();
+
+			Date departureDate = null;
+			Date arrivalDate = null;
+
+			try {
+				departureDate = new SimpleDateFormat("MM-dd-yyyy").format(actualDepartureDate);
+				arrivalDate = new SimpleDateFormat("MM-dd-yyyy").format(actualArrivalDate);
+				// System.out.println(departureDate.getClass().getName());
+			} catch (Exception e){
+				System.err.println(e.getMessage());
+			}
 
 
+			System.out.println("airport arrival: ");
+			String airportArrival = "'" + Scanner.next() + "'";
 
+			System.out.println("airport departure: ");
+			String airportDeparture = "'" + Scanner.next() + "'";
+			
+			String query = "INSERT INTO Flight VALUES(" + flightNumber + ", " +
+			costOfFlight  + ", " +  numberOfSold  + ", " + numberOfStops + ", " + "'" +
+			departureDate + "'" + ", " + "'" + arrivalDate + "'" + ", " +
+			airportArrival +  ", " + airportDeparture + ")";
 
+			System.out.println(query);
 
+			esql.executeUpdate(query);
+			
+		}catch (Exception e){
+			System.err.println(e.getMessage());
+		}
 	}
+
 
 	public static void AddTechnician(DBproject esql) {//4
 	    Scanner input = new Scanner(System.in);

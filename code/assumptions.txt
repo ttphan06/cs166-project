@@ -1,5 +1,12 @@
 "Assumptions" (in process)
 
+#### Testing Add Plane ####
+
+
+liamhan_DB=# SELECT * FROM Plane WHERE Plane.make = 'liam';
+   id   |               make               |                              model                               | age | seats 
+--------+----------------------------------+------------------------------------------------------------------+-----+-------
+ 203030 | liam                             | han                                                              |  30 |    30
 
 
 #### Testing Add Flight ####
