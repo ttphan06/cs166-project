@@ -10,7 +10,9 @@
  *
  */
 
-
+import java.util.Date;
+import java.text.DateFormat;  
+import java.text.SimpleDateFormat;
 import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.Statement;
@@ -302,6 +304,30 @@ public class DBproject{
 
 	public static void AddPlane(DBproject esql) {//1
 
+		try{
+			Scanner Scanner = new Scanner(System.in);
+			
+			
+			System.out.println("Plane number: ");
+			int plane_id = Scanner.nextInt();
+			System.out.println("make: ");
+			String make = "'" + Scanner.next() + "'";
+
+			System.out.println("model: ");
+			String model = "'" + Scanner.next() + "'";
+			System.out.println("Age: ");
+			int age = Scanner.nextInt();
+			System.out.println("Seats: ");
+			int seats = Scanner.nextInt();
+			String query = "INSERT INTO Plane VALUES(" + plane_id + ", " + make  + ", " +  model  + ", " + age + ", " + seats + ")";
+			System.out.println(query);
+			esql.executeUpdate(query);
+			
+		}catch (Exception e){
+			System.err.println(e.getMessage());
+		}
+
+
 	}
         
 	public static void AddPilot(DBproject esql) {//2
@@ -333,6 +359,11 @@ public class DBproject{
 
 	public static void AddFlight(DBproject esql) {//3
 		// Given a pilot, plane and flight, adds a flight in the DB
+
+
+
+
+
 	}
 
 	public static void AddTechnician(DBproject esql) {//4

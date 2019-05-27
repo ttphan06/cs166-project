@@ -1,0 +1,20 @@
+"Assumptions" (in process)
+
+
+
+#### Testing Add Flight ####
+
+INSERT INTO Flight VALUES(3030303, 3, 3, 3, 'Sun Sep 22 00:00:00 PDT 2002', 'Tue Sep 23 00:00:00 PDT 2003', '3', '3')
+
+psql -h localhost -p 9999 liamhan_DB 
+psql (11.3)
+Type "help" for help.
+
+liamhan_DB=# SELECT * FROM Flight WHERE Flight.fnum = 3030303;
+
+
+  fnum   | cost | num_sold | num_stops | actual_departure_date | actual_arrival_date | arrival_airport | departure_airport 
+---------+------+----------+-----------+-----------------------+---------------------+-----------------+-------------------
+ 3030303 |    3 |        3 |         3 | 2002-09-22            | 2003-09-23          | 3               | 3    
+(1 row)
+
