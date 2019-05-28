@@ -242,6 +242,49 @@ public class DBproject{
 			String user = args[2];
 			
 			esql = new DBproject (dbname, dbport, user, "");
+
+
+			String pilotTrigger = "DROP SEQUENCE IF EXISTS pilot_number_seq CASCADE; " +
+			"DROP TRIGGER IF EXISTS pilot_trigger on Pilot; " +
+			"CREATE SEQUENCE pilot_number_seq START WITH 250; " +
+			"CREATE OR REPLACE FUNCTION func_pilot() RETURNS trigger AS " +
+			"$BODY$ BEGIN " + 
+			"new.id := nextval('pilot_number_seq'); " +
+			"RETURN new; " +
+			"END; " + 
+			"$BODY$ " +
+			"LANGUAGE plpgsql VOLATILE; " +
+			"CREATE TRIGGER pilot_trigger BEFORE INSERT ON Pilot FOR EACH ROW EXECUTE PROCEDURE func_pilot(); ";
+
+			String planeTrigger = "DROP SEQUENCE IF EXISTS plane_number_seq CASCADE; " +
+			"DROP TRIGGER IF EXISTS plane_trigger on Plane; " +
+			"CREATE SEQUENCE plane_number_seq START WITH 67; " +
+			"CREATE OR REPLACE FUNCTION func_plane() RETURNS trigger AS " +
+			"$BODY$ BEGIN " + 
+			"new.id := nextval('plane_number_seq'); " +
+			"RETURN new; " +
+			"END; " + 
+			"$BODY$ " +
+			"LANGUAGE plpgsql VOLATILE; " +
+			"CREATE TRIGGER plane_trigger BEFORE INSERT ON Plane FOR EACH ROW EXECUTE PROCEDURE func_plane(); ";
+
+			String flightTrigger = "DROP SEQUENCE IF EXISTS flight_number_seq CASCADE; " +
+			"DROP TRIGGER IF EXISTS flight_trigger on Flight; " +
+			"CREATE SEQUENCE flight_number_seq START WITH 2000; " +
+			"CREATE OR REPLACE FUNCTION func_flight() RETURNS trigger AS " +
+			"$BODY$ BEGIN " + 
+			"new.fnum := nextval('flight_number_seq'); " +
+			"RETURN new; " +
+			"END; " + 
+			"$BODY$ " +
+			"LANGUAGE plpgsql VOLATILE; " +
+			"CREATE TRIGGER flight_trigger BEFORE INSERT ON Flight FOR EACH ROW EXECUTE PROCEDURE func_flight(); ";
+
+
+			esql.executeUpdate(pilotTrigger);
+			esql.executeUpdate(planeTrigger);
+			esql.executeUpdate(flightTrigger);
+		
 			
 			boolean keepon = true;
 			while(keepon){
@@ -307,9 +350,7 @@ public class DBproject{
 		try{
 			Scanner Scanner = new Scanner(System.in);
 			
-			
-			System.out.println("Plane number: ");
-			int plane_id = Scanner.nextInt();
+
 			System.out.println("make: ");
 			String make = "'" + Scanner.next() + "'";
 
@@ -319,7 +360,7 @@ public class DBproject{
 			int age = Scanner.nextInt();
 			System.out.println("Seats: ");
 			int seats = Scanner.nextInt();
-			String query = "INSERT INTO Plane VALUES(" + plane_id + ", " + make  + ", " +  model  + ", " + age + ", " + seats + ")";
+			String query = "INSERT INTO Plane(make, model, age, seats) VALUES(" + make  + ", " +  model  + ", " + age + ", " + seats + ")";
 			System.out.println(query);
 			esql.executeUpdate(query);
 			
@@ -333,9 +374,9 @@ public class DBproject{
 	public static void AddPilot(DBproject esql) {//2
 	    Scanner input = new Scanner(System.in);
 
-	    System.out.println("Enter pilot ID");
-	    int pilotID = input.nextInt();
-	    String clear = input.nextLine(); // remove the \n
+	    //System.out.println("Enter pilot ID");
+	    //int pilotID = input.nextInt();
+	    //String clear = input.nextLine(); // remove the \n
 	    System.out.println("Enter pilot full name");
 	    String pilotName = "'";
 	    pilotName += input.nextLine();
@@ -345,8 +386,7 @@ public class DBproject{
 	    pilotNationality += input.nextLine();
 	    pilotNationality += "'";
 	    
-	    String query = "INSERT INTO Pilot VALUES (" + Integer.toString(pilotID) 
-		+ "," + pilotName + "," + pilotNationality + ");";
+	    String query = "INSERT INTO Pilot(fullname, nationality) VALUES (" + pilotName + "," + pilotNationality + ");";
 	    try {
 		esql.executeUpdate(query);
 	    }
@@ -363,8 +403,6 @@ public class DBproject{
 		try{
 			Scanner Scanner = new Scanner(System.in);
 
-			System.out.println("Flight Number: ");
-			int flightNumber = Scanner.nextInt();
 
 			System.out.println("cost: ");
 			int costOfFlight = Scanner.nextInt();
@@ -385,8 +423,8 @@ public class DBproject{
 			Date arrivalDate = null;
 
 			try {
-				departureDate = new SimpleDateFormat("MM-dd-yyyy").format(actualDepartureDate);
-				arrivalDate = new SimpleDateFormat("MM-dd-yyyy").format(actualArrivalDate);
+				departureDate = new SimpleDateFormat("MM-dd-yyyy").parse(actualDepartureDate);
+				arrivalDate = new SimpleDateFormat("MM-dd-yyyy").parse(actualArrivalDate);
 				// System.out.println(departureDate.getClass().getName());
 			} catch (Exception e){
 				System.err.println(e.getMessage());
@@ -399,8 +437,8 @@ public class DBproject{
 			System.out.println("airport departure: ");
 			String airportDeparture = "'" + Scanner.next() + "'";
 			
-			String query = "INSERT INTO Flight VALUES(" + flightNumber + ", " +
-			costOfFlight  + ", " +  numberOfSold  + ", " + numberOfStops + ", " + "'" +
+			String query = "INSERT INTO Flight(cost, num_sold, num_stops, actual_departure_date, actual_arrival_date, arrival_airport, departure_airport) VALUES(" //+ flightNumber + ", " +
+			+ costOfFlight  + ", " +  numberOfSold  + ", " + numberOfStops + ", " + "'" +
 			departureDate + "'" + ", " + "'" + arrivalDate + "'" + ", " +
 			airportArrival +  ", " + airportDeparture + ")";
 

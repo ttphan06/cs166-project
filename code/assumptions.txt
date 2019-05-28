@@ -9,6 +9,14 @@ liamhan_DB=# SELECT * FROM Plane WHERE Plane.make = 'liam';
  203030 | liam                             | han                                                              |  30 |    30
 
 
+
+### ADDING FLIGHT INFO ###
+
+NEED TO CREATE TRIGGER, PROCEDURE FOR fnum and fiid
+with a sequence starting from 2001. 
+
+
+
 #### Testing Add Flight ####
 
 INSERT INTO Flight VALUES(3030303, 3, 3, 3, 'Sun Sep 22 00:00:00 PDT 2002', 'Tue Sep 23 00:00:00 PDT 2003', '3', '3')
@@ -24,4 +32,5 @@ liamhan_DB=# SELECT * FROM Flight WHERE Flight.fnum = 3030303;
 ---------+------+----------+-----------+-----------------------+---------------------+-----------------+-------------------
  3030303 |    3 |        3 |         3 | 2002-09-22            | 2003-09-23          | 3               | 3    
 (1 row)
+
 
