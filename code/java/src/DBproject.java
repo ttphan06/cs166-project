@@ -27,6 +27,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import javax.naming.event.NamingExceptionEvent;
+
 /**
  * This class defines a simple embedded SQL utility class that is designed to
  * work with PostgreSQL JDBC drivers.
@@ -399,9 +401,21 @@ public class DBproject{
 
 	public static void AddFlight(DBproject esql) {//3
 		// Given a pilot, plane and flight, adds a flight in the DB
+
+
+		/*
+			Auto-generates primary key for Table 'Flight'.
+			Adds Values into Flight table and FlightInfo. 
+
+		*/
 		
 		try{
 			Scanner Scanner = new Scanner(System.in);
+			System.out.println("Pilot id: ");
+			int pilotID = Scanner.nextInt();
+
+			System.out.println("Plane id: ");
+			int planeID = Scanner.nextInt();
 
 
 			System.out.println("cost: ");
@@ -437,19 +451,38 @@ public class DBproject{
 			System.out.println("airport departure: ");
 			String airportDeparture = "'" + Scanner.next() + "'";
 			
-			String query = "INSERT INTO Flight(cost, num_sold, num_stops, actual_departure_date, actual_arrival_date, arrival_airport, departure_airport) VALUES(" //+ flightNumber + ", " +
-			+ costOfFlight  + ", " +  numberOfSold  + ", " + numberOfStops + ", " + "'" +
+	
+			String query = "INSERT INTO Flight(cost, num_sold, num_stops, actual_departure_date, actual_arrival_date, arrival_airport, departure_airport) VALUES(" + 
+			costOfFlight  + ", " +  numberOfSold  + ", " + numberOfStops + ", " + "'" +
 			departureDate + "'" + ", " + "'" + arrivalDate + "'" + ", " +
-			airportArrival +  ", " + airportDeparture + ")";
-
+			airportArrival +  ", " + airportDeparture + "); ";
+			
+			
 			System.out.println(query);
-
 			esql.executeUpdate(query);
+			
+
+			String getId = "SELECT Flight.fnum FROM Flight WHERE Flight.actual_departure_date = " + 
+			"'" + departureDate + "'" + " AND Flight.actual_arrival_date = " + "'" + arrivalDate + "'" + "; ";
+			
+			System.out.println(getId);
+			
+			List<List<String>> record = esql.executeQueryAndReturnResult(getId);
+			String s = record.get(0).get(0);
+			int id = Integer.parseInt(s);
+			String query0 = "INSERT INTO FlightInfo VALUES (" + 
+			id + ", " + id + ", " +
+			pilotID + ", " + planeID + ");";
+			System.out.println(id);
+			esql.executeUpdate(query0);
+			
+
 			
 		}catch (Exception e){
 			System.err.println(e.getMessage());
 		}
 	}
+
 
 
 	public static void AddTechnician(DBproject esql) {//4
