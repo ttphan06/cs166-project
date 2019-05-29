@@ -411,13 +411,14 @@ public class DBproject{
 		
 		try{
 			Scanner Scanner = new Scanner(System.in);
+			System.out.println("Enter Plane and Pilot ID: ");
 			System.out.println("Pilot id: ");
 			int pilotID = Scanner.nextInt();
 
 			System.out.println("Plane id: ");
 			int planeID = Scanner.nextInt();
 
-
+			System.out.println("Enter Flight information: ");
 			System.out.println("cost: ");
 			int costOfFlight = Scanner.nextInt();
 
