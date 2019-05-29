@@ -211,6 +211,10 @@ public class DBproject{
 		}//end try
 	}//end cleanup
 
+	public void executeTriggers(){
+		
+	}
+
 	/**
 	 * The main execution method
 	 * 
@@ -283,9 +287,9 @@ public class DBproject{
 			"CREATE TRIGGER flight_trigger BEFORE INSERT ON Flight FOR EACH ROW EXECUTE PROCEDURE func_flight(); ";
 
 
-			esql.executeUpdate(pilotTrigger);
-			esql.executeUpdate(planeTrigger);
-			esql.executeUpdate(flightTrigger);
+			//esql.executeUpdate(pilotTrigger);
+			//esql.executeUpdate(planeTrigger);
+			//esql.executeUpdate(flightTrigger);
 		
 			
 			boolean keepon = true;
@@ -402,12 +406,6 @@ public class DBproject{
 	public static void AddFlight(DBproject esql) {//3
 		// Given a pilot, plane and flight, adds a flight in the DB
 
-
-		/*
-			Auto-generates primary key for Table 'Flight'.
-			Adds Values into Flight table and FlightInfo. 
-
-		*/
 		
 		try{
 			Scanner Scanner = new Scanner(System.in);
@@ -507,7 +505,22 @@ public class DBproject{
 	}
 
 	public static void BookFlight(DBproject esql) {//5
+		
 		// Given a customer and a flight that he/she wants to book, add a reservation to the DB
+	/*
+
+		switch
+		provide existing customer
+		create new customer:
+
+		book a flight
+		ffffjuuk
+
+	*/
+	
+	
+	
+	
 	}
 
 	public static void ListNumberOfAvailableSeats(DBproject esql) {//6
@@ -533,7 +546,7 @@ public class DBproject{
 
 	    String query = "SELECT COUNT(r.status) FROM Reservation r WHERE r.fid = ";
 	    query += flightNum + "GROUP BY r.status HAVING r.status = " + status + ";";
-
+		
 	    try {
 		System.out.println("Number passenger: " + esql.executeQueryAndReturnResult(query).get(0).get(0));
 	    }
