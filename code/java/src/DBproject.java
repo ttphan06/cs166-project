@@ -564,6 +564,22 @@ public class DBproject{
 
 	public static void ListNumberOfAvailableSeats(DBproject esql) {//6
 		// For flight number and date, find the number of availalbe seats (i.e. total plane capacity minus booked seats )
+	    Scanner input = new Scanner(System.in);
+	    System.out.println("Enter flight number");
+	    String fNumber = input.nextLine();
+	    System.out.println("Enter departure date");
+	    String dDate = "'" + input.nextLine() + "'";
+	    String query = "SELECT p.seats - f.num_sold "
+		+ "FROM ((flightinfo i INNER JOIN flight f ON i.flight_id = f.fnum) "
+		+ "INNER JOIN plane p ON p.id = i.plane_id) "
+		+ "WHERE f.fnum = " + fNumber + " AND f.actual_departure_date = " + dDate +";";
+
+	    try {
+		esql.executeQueryAndPrintResult(query);
+	    }
+	    catch (Exception e) {
+		System.err.println(e.getMessage());
+	    }
 	}
 
 	public static void ListsTotalNumberOfRepairsPerPlane(DBproject esql) {//7
