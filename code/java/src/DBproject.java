@@ -568,14 +568,28 @@ public class DBproject{
 
 	public static void ListsTotalNumberOfRepairsPerPlane(DBproject esql) {//7
 		// Count number of repairs per planes and list them in descending order
+		String query = "SELECT r.plane_id, count(r.plane_id)" + 
+		"from Repairs r " +
+		"group by r.plane_id " + 
+		"order by count(r.plane_id); ";
+
+	    try {
+		esql.executeQueryAndPrintResult(query);
+	    }
+	    catch (Exception e) {
+		System.err.println(e.getMessage());
+	    }
 	}
+
 
 	public static void ListTotalNumberOfRepairsPerYear(DBproject esql) {//8
 		// Count repairs per year and list them in ascending order
-	    String query = "SELECT EXTRACT(YEAR FROM r.repair_date), COUNT(EXTRACT(YEAR FROM r.repair_date)) "
+
+		String query = "SELECT EXTRACT(YEAR FROM r.repair_date), COUNT(EXTRACT(YEAR FROM r.repair_date)) "
 		+ "FROM Repairs r "
 		+ "GROUP BY EXTRACT(YEAR FROM r.repair_date) "
 		+ "ORDER BY COUNT(EXTRACT(YEAR FROM r.repair_date));";
+
 
 	    try {
 		esql.executeQueryAndPrintResult(query);
