@@ -571,7 +571,7 @@ public class DBproject{
 		String query = "SELECT r.plane_id, count(r.plane_id)" + 
 		"from Repairs r " +
 		"group by r.plane_id " + 
-		"order by count(r.plane_id); ";
+		"order by count(r.plane_id) desc; ";
 
 	    try {
 		esql.executeQueryAndPrintResult(query);
