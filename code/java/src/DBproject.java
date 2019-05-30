@@ -211,9 +211,6 @@ public class DBproject{
 		}//end try
 	}//end cleanup
 
-	public void executeTriggers(){
-		
-	}
 
 	/**
 	 * The main execution method
@@ -249,49 +246,8 @@ public class DBproject{
 			
 			esql = new DBproject (dbname, dbport, user, "");
 
-
-			String pilotTrigger = "DROP SEQUENCE IF EXISTS pilot_number_seq CASCADE; " +
-			"DROP TRIGGER IF EXISTS pilot_trigger on Pilot; " +
-			"CREATE SEQUENCE pilot_number_seq START WITH 250; " +
-			"CREATE OR REPLACE FUNCTION func_pilot() RETURNS trigger AS " +
-			"$BODY$ BEGIN " + 
-			"new.id := nextval('pilot_number_seq'); " +
-			"RETURN new; " +
-			"END; " + 
-			"$BODY$ " +
-			"LANGUAGE plpgsql VOLATILE; " +
-			"CREATE TRIGGER pilot_trigger BEFORE INSERT ON Pilot FOR EACH ROW EXECUTE PROCEDURE func_pilot(); ";
-
-			String planeTrigger = "DROP SEQUENCE IF EXISTS plane_number_seq CASCADE; " +
-			"DROP TRIGGER IF EXISTS plane_trigger on Plane; " +
-			"CREATE SEQUENCE plane_number_seq START WITH 67; " +
-			"CREATE OR REPLACE FUNCTION func_plane() RETURNS trigger AS " +
-			"$BODY$ BEGIN " + 
-			"new.id := nextval('plane_number_seq'); " +
-			"RETURN new; " +
-			"END; " + 
-			"$BODY$ " +
-			"LANGUAGE plpgsql VOLATILE; " +
-			"CREATE TRIGGER plane_trigger BEFORE INSERT ON Plane FOR EACH ROW EXECUTE PROCEDURE func_plane(); ";
-
-			String flightTrigger = "DROP SEQUENCE IF EXISTS flight_number_seq CASCADE; " +
-			"DROP TRIGGER IF EXISTS flight_trigger on Flight; " +
-			"CREATE SEQUENCE flight_number_seq START WITH 2000; " +
-			"CREATE OR REPLACE FUNCTION func_flight() RETURNS trigger AS " +
-			"$BODY$ BEGIN " + 
-			"new.fnum := nextval('flight_number_seq'); " +
-			"RETURN new; " +
-			"END; " + 
-			"$BODY$ " +
-			"LANGUAGE plpgsql VOLATILE; " +
-			"CREATE TRIGGER flight_trigger BEFORE INSERT ON Flight FOR EACH ROW EXECUTE PROCEDURE func_flight(); ";
-
-
-			//esql.executeUpdate(pilotTrigger);
-			//esql.executeUpdate(planeTrigger);
-			//esql.executeUpdate(flightTrigger);
 		
-			
+
 			boolean keepon = true;
 			while(keepon){
 				System.out.println("MAIN MENU");
@@ -352,21 +308,26 @@ public class DBproject{
 	}//end readChoice
 
 	public static void AddPlane(DBproject esql) {//1
-
+		
+		String make, model, query;
+		int age, seats;
+		
 		try{
-			Scanner Scanner = new Scanner(System.in);
 			
-
 			System.out.println("make: ");
-			String make = "'" + Scanner.next() + "'";
+			make = "'" + in.readLine() + "'";
 
 			System.out.println("model: ");
-			String model = "'" + Scanner.next() + "'";
+			model = "'" + in.readLine() + "'";
+
 			System.out.println("Age: ");
-			int age = Scanner.nextInt();
+			age = Integer.parseInt(in.readLine());
+
 			System.out.println("Seats: ");
-			int seats = Scanner.nextInt();
-			String query = "INSERT INTO Plane(make, model, age, seats) VALUES(" + make  + ", " +  model  + ", " + age + ", " + seats + ")";
+			seats = Integer.parseInt(in.readLine());
+
+			query = "INSERT INTO Plane(make, model, age, seats) VALUES(" + 
+			make  + ", " +  model  + ", " + age + ", " + seats + ")";
 			System.out.println(query);
 			esql.executeUpdate(query);
 			
@@ -380,9 +341,7 @@ public class DBproject{
 	public static void AddPilot(DBproject esql) {//2
 	    Scanner input = new Scanner(System.in);
 
-	    //System.out.println("Enter pilot ID");
-	    //int pilotID = input.nextInt();
-	    //String clear = input.nextLine(); // remove the \n
+	
 	    System.out.println("Enter pilot full name");
 	    String pilotName = "'";
 	    pilotName += input.nextLine();
@@ -395,7 +354,7 @@ public class DBproject{
 	    String query = "INSERT INTO Pilot(fullname, nationality) VALUES (" + pilotName + "," + pilotNationality + ");";
 	    try {
 		esql.executeUpdate(query);
-	    }
+	    } 
 	    catch(Exception e) {
 		System.err.println(e.getMessage());
 	    }
@@ -406,63 +365,71 @@ public class DBproject{
 	public static void AddFlight(DBproject esql) {//3
 		// Given a pilot, plane and flight, adds a flight in the DB
 
-		
+		Date departureDate = null, arrivalDate = null;
+		int pilotId, planeId, costOfFlight, numberOfSold, numberOfStops;
+		String actualDepartureDate, actualArrivalDate, airportArrival, airportDeparture, getId, query; 
+
 		try{
-			Scanner Scanner = new Scanner(System.in);
+			
 			System.out.println("Enter Plane and Pilot ID: ");
+			System.out.println("----------------------------");
 			System.out.println("Pilot id: ");
-			int pilotID = Scanner.nextInt();
+			pilotId = Integer.parseInt(in.readLine());
+
 
 			System.out.println("Plane id: ");
-			int planeID = Scanner.nextInt();
+			planeId = Integer.parseInt(in.readLine());
 
 			System.out.println("Enter Flight information: ");
+			System.out.println("---------------------------");
+
 			System.out.println("cost: ");
-			int costOfFlight = Scanner.nextInt();
+			costOfFlight = Integer.parseInt(in.readLine());
 
 			System.out.println("number sold: ");
-			int numberOfSold = Scanner.nextInt();
+			numberOfSold = Integer.parseInt(in.readLine());
 
 			System.out.println("number of stops: ");
-			int numberOfStops = Scanner.nextInt();
+			numberOfStops = Integer.parseInt(in.readLine());
 
-			System.out.println("actual departure date: (MM-dd-yyyy) ");
-			String actualDepartureDate = Scanner.next();
 
-			System.out.println("actual arrival date: (MM-dd-yyyy) ");
-			String actualArrivalDate = Scanner.next();
-
-			Date departureDate = null;
-			Date arrivalDate = null;
-
+			
 			try {
+
+				System.out.println("actual departure date: (MM-dd-yyyy) ");
+				actualDepartureDate = in.readLine();
+
+				System.out.println("actual arrival date: (MM-dd-yyyy) ");
+				actualArrivalDate = in.readLine();
+
 				departureDate = new SimpleDateFormat("MM-dd-yyyy").parse(actualDepartureDate);
 				arrivalDate = new SimpleDateFormat("MM-dd-yyyy").parse(actualArrivalDate);
 				// System.out.println(departureDate.getClass().getName());
 			} catch (Exception e){
 				System.err.println(e.getMessage());
-			}
+			} 
 
 
 			System.out.println("airport arrival: ");
-			String airportArrival = "'" + Scanner.next() + "'";
+			airportArrival = "'" + in.readLine() + "'";
 
 			System.out.println("airport departure: ");
-			String airportDeparture = "'" + Scanner.next() + "'";
+			airportDeparture = "'" + in.readLine() + "'";
+
 			
-	
-			String query = "INSERT INTO Flight(cost, num_sold, num_stops, actual_departure_date, actual_arrival_date, arrival_airport, departure_airport) VALUES(" + 
+			query = "INSERT INTO Flight(cost, num_sold, num_stops, actual_departure_date, actual_arrival_date, arrival_airport, departure_airport) VALUES(" + 
 			costOfFlight  + ", " +  numberOfSold  + ", " + numberOfStops + ", " + "'" +
 			departureDate + "'" + ", " + "'" + arrivalDate + "'" + ", " +
 			airportArrival +  ", " + airportDeparture + "); ";
 			
-			
-			System.out.println(query);
+			System.out.println(query); // test query
 			esql.executeUpdate(query);
-			
 
-			String getId = "SELECT Flight.fnum FROM Flight WHERE Flight.actual_departure_date = " + 
-			"'" + departureDate + "'" + " AND Flight.actual_arrival_date = " + "'" + arrivalDate + "'" + "; ";
+		
+			getId = "SELECT Flight.fnum FROM Flight WHERE Flight.actual_departure_date = " + 
+			"'" + departureDate + "'" + 
+			" AND Flight.actual_arrival_date = " + 
+			"'" + arrivalDate + "'" + "; ";
 			
 			System.out.println(getId);
 			
@@ -471,7 +438,7 @@ public class DBproject{
 			int id = Integer.parseInt(s);
 			String query0 = "INSERT INTO FlightInfo VALUES (" + 
 			id + ", " + id + ", " +
-			pilotID + ", " + planeID + ");";
+			pilotId + ", " + planeId + ");";
 			System.out.println(id);
 			esql.executeUpdate(query0);
 			
@@ -482,19 +449,72 @@ public class DBproject{
 		}
 	}
 
+	public static void AddCustomer(DBproject esql){ //Add Customer
+
+		
+		String fname, lname, address, phone, zipcode, query, birthDate;
+		char gtype;
+		Date dob = null;
+
+	
+		try {
+
+			System.out.println("First name: ");
+			fname = "'" + in.readLine() + "'";
+
+			System.out.println("Last name: ");
+			lname = "'" + in.readLine() + "'";
+
+			System.out.println("Gender: (M, F) ");
+			gtype = in.readLine().charAt(0);
+
+	
+			do{
+				try {
+					System.out.println("Date of birth: (MM-dd-yyyy)");
+					birthDate = in.readLine();
+					dob = new SimpleDateFormat("MM-dd-yyyy").parse(birthDate);	
+					break;
+				} catch (Exception e){
+					System.err.println(e.getMessage());
+					System.out.println("Enter correct date ");
+				}
+			} while(true);
+
+
+			System.out.println("Address: ");
+			address = "'" + in.readLine() + "'";
+
+			System.out.println("phone: ");
+			phone = "'" + in.readLine() + "'";
+
+			System.out.println("zipcode: ");
+			zipcode = "'" + in.readLine() + "'";
+
+			query = "INSERT INTO Customer(fname, lname, gtype, dob, address, phone, zipcode) VALUES(" +
+			fname + ", " + lname + ", " + "'" + gtype + "', " + "'" + dob + "', " + address + ", " +
+			phone + ", " + zipcode + ");";  
+
+			esql.executeUpdate(query);
+
+		} catch(Exception e){
+			System.err.println(e.getMessage());
+		}
+
+		
+
+	}
+
 
 
 	public static void AddTechnician(DBproject esql) {//4
 	    Scanner input = new Scanner(System.in);
 	    
-	    System.out.println("Enter technician ID");
-	    int techID = input.nextInt();
-	    System.out.println("you enter: " + techID);
-	    String deleteNewline = input.nextLine();
+	    
 	    System.out.println("Enter technician full name");
 	    String techName = "'" + input.nextLine() + "'";
 
-	    String query = "INSERT INTO Technician VALUES (" + Integer.toString(techID) + "," 
+	    String query = "INSERT INTO Technician(full_name) VALUES (" 
 		+ techName + ");";
 	    try {
 		esql.executeUpdate(query);
@@ -507,21 +527,40 @@ public class DBproject{
 	public static void BookFlight(DBproject esql) {//5
 		
 		// Given a customer and a flight that he/she wants to book, add a reservation to the DB
-	/*
 
-		switch
-		provide existing customer
-		create new customer:
+		int option;
+			
+		System.out.println("OPTIONS : ");
+		System.out.println(" --------- ");
+		System.out.println("1. Enter Customer ID ");
+		System.out.println("2. Create New Customer ");
+		
+		try{
 
-		book a flight
-		ffffjuuk
+			do{
+				option = readChoice();
+				if (option == 1 || option == 2){
+					break;
+				}
+			} while(true);
 
-	*/
+			switch(option){
+				case 1:
+				System.out.println("Enter Customer ID: "); 
+				break;
+
+				case 2: 
+				AddCustomer(esql); 
+				break;
+			}
+		
+		}catch (Exception e) {
+			System.out.println("Invalid Input. Choose 1 or 2 ");
+		}
+
+		}
+		
 	
-	
-	
-	
-	}
 
 	public static void ListNumberOfAvailableSeats(DBproject esql) {//6
 		// For flight number and date, find the number of availalbe seats (i.e. total plane capacity minus booked seats )
