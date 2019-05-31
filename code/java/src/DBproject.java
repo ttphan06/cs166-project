@@ -267,12 +267,31 @@ public class DBproject{
 				*/
 
 				JFrame f = new JFrame("Airline Application"); 
-				JButton b=new JButton("Click Here");  
-				JButton b2=new JButton("Click Here"); 
-				b.setBounds(50,100,95,30);  
-				b2.setBounds(50,200,95,30);  
-				f.add(b); 
-				f.add(b2);   
+				JButton[] buttons = new JButton[10];
+				JLabel label1 = new JLabel("MAIN MENU", SwingConstants.CENTER);
+				label1.setBounds(150,80,450,35);
+				f.add(label1);
+				buttons[0] = new JButton("1. Add Plane");  
+				buttons[1]=new JButton("2. Add Pilot"); 
+				buttons[2]=new JButton("3. Add Flight");  
+				buttons[3]=new JButton("4. Add Technician"); 
+				buttons[4]=new JButton("5. Book Flight");  
+				buttons[5]=new JButton("6. List number of available seats for a given flight."); 
+				buttons[6]=new JButton("7. List total number of repairs per plane in descending order");  
+				buttons[7]=new JButton("8. List total number of repairs per year in ascending order"); 
+				buttons[8]=new JButton("9. Find total number of passengers with a given status");  
+				buttons[9]=new JButton("10. < EXIT"); 
+				int x = 80;
+			
+				for (int i =0; i < buttons.length - 1; i++ ){
+					x += 30;
+					buttons[i].setBounds(150, x, 450, 35);
+					buttons[i].setHorizontalAlignment(SwingConstants.LEFT);
+					
+					f.add(buttons[i]);
+				}
+				
+				
 				f.setSize(400,400);  
 				f.setLayout(null);  
 				f.setVisible(true);   
