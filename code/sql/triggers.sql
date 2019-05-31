@@ -4,7 +4,7 @@ CREATE SEQUENCE pilot_number_seq START WITH 250;
 CREATE SEQUENCE flight_number_seq START WITH 2000;
 CREATE SEQUENCE customer_number_seq START WITH 250;
 CREATE SEQUENCE technician_number_seq START WITH 250;
-CREATE SEQUENCE reservation_number_seq START WITH 9985;
+CREATE SEQUENCE reservation_number_seq START WITH 9999;
 
 
 CREATE OR REPLACE FUNCTION func_pilot() 

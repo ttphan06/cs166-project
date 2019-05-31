@@ -528,7 +528,7 @@ public class DBproject{
 		
 		// Given a customer and a flight that he/she wants to book, add a reservation to the DB
 
-		int option, fnum, customerId;
+		int option, fnum, customerId = 0;
 		String query; 
 		char status;
 
@@ -565,15 +565,18 @@ public class DBproject{
 			String s = availableSeats.get(0).get(0);
 			int available = Integer.parseInt(s);
 
-			cid = customerId;
 			if (available > 0){
 				status = 'C';
+				String query3 = "UPDATE Flight SET num_sold = num_sold + 1 WHERE fnum = " + fnum + "; ";
+				esql.executeUpdate(query3);
+
+
 			} else{
 				status = 'W';
 			}
 
 			String query2 = "INSERT into Reservation(cid, fid, status) VALUES(" +
-			cid + ", " + fnum + ", " + "'" + status + "');";
+			customerId + ", " + fnum + ", " + "'" + status + "');";
 
 				esql.executeUpdate(query2);
 			
