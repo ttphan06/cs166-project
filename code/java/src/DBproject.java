@@ -267,10 +267,17 @@ public class DBproject{
 				*/
 
 				JFrame f = new JFrame("Airline Application"); 
+				f.setVisible(true);   
+				f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				f.setSize(600,600);
+				f.setVisible(true);
+				f.setResizable(false);
 				JButton[] buttons = new JButton[10];
 				JLabel label1 = new JLabel("MAIN MENU", SwingConstants.CENTER);
-				label1.setBounds(150,80,430,35);
+				label1.setBounds(80,40,430,35);
 				f.add(label1);
+				JPanel panel = new JPanel();
+				f.getContentPane().setLayout(null);
 				buttons[0] = new JButton("1. Add Plane");  
 				buttons[1]=new JButton("2. Add Pilot"); 
 				buttons[2]=new JButton("3. Add Flight");  
@@ -281,28 +288,16 @@ public class DBproject{
 				buttons[7]=new JButton("8. List total number of repairs per year in ascending order"); 
 				buttons[8]=new JButton("9. Find total number of passengers with a given status");  
 				buttons[9]=new JButton("10. < EXIT"); 
-				int x = 80;
+				int x = 40;
 			
-				for (int i =0; i < buttons.length - 1; i++ ){
-					x += 30;
-					buttons[i].setBounds(150, x, 430, 35);
-					buttons[i].setHorizontalAlignment(SwingConstants.LEFT);
+				for (int i =0; i < buttons.length; i++ ){
+					x += 40;
 					
+					buttons[i].setBounds(80, x, 430, 35);
+					buttons[i].setHorizontalAlignment(SwingConstants.LEFT);
 					f.add(buttons[i]);
 				}
-				
-				
-				f.setSize(400,400);  
-				f.setLayout(null);  
-				f.setVisible(true);   
-				f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				f.setSize(800,800);
-				f.setVisible(true);
-
-				
-
-
-
+	
 
 				switch (readChoice()){
 					case 1: AddPlane(esql); break;
