@@ -449,12 +449,13 @@ public class DBproject{
 		}
 	}
 
-	public static void AddCustomer(DBproject esql){ //Add Customer
+	public static int AddCustomer(DBproject esql){ //Add Customer
 
 		
-		String fname, lname, address, phone, zipcode, query, birthDate;
+		String fname, lname, address, phone, zipcode, query, query2, birthDate;
 		char gtype;
 		Date dob = null;
+		int cid = 0;
 
 	
 		try {
@@ -484,7 +485,7 @@ public class DBproject{
 
 			System.out.println("Address: ");
 			address = "'" + in.readLine() + "'";
-
+			
 			System.out.println("phone: ");
 			phone = "'" + in.readLine() + "'";
 
@@ -494,14 +495,26 @@ public class DBproject{
 			query = "INSERT INTO Customer(fname, lname, gtype, dob, address, phone, zipcode) VALUES(" +
 			fname + ", " + lname + ", " + "'" + gtype + "', " + "'" + dob + "', " + address + ", " +
 			phone + ", " + zipcode + ");";  
-
+			
 			esql.executeUpdate(query);
+
+			query2 = "SELECT Customer.id FROM Customer WHERE fname = " + fname + " AND lname = " + lname + 
+			"AND dob = '" + dob + "';";
+
+
+			List<List<String>> customerId = esql.executeQueryAndReturnResult(query2);
+			String s = customerId.get(0).get(0);
+			cid = Integer.parseInt(s);
 
 		} catch(Exception e){
 			System.err.println(e.getMessage());
+		} finally {
+			System.out.println("*Customer created*"); 
+			System.out.println("Book a flight ");
+			System.out.println("------------------");
 		}
 
-		
+		return cid;
 
 	}
 
@@ -552,7 +565,8 @@ public class DBproject{
 				break;
 
 				case 2: 
-				AddCustomer(esql); 
+				customerId = AddCustomer(esql); 
+				
 				break;
 			}
 
@@ -569,12 +583,10 @@ public class DBproject{
 				status = 'C';
 				String query3 = "UPDATE Flight SET num_sold = num_sold + 1 WHERE fnum = " + fnum + "; ";
 				esql.executeUpdate(query3);
-
-
 			} else{
 				status = 'W';
 			}
-
+			System.out.println("You reservation status: " + status);
 			String query2 = "INSERT into Reservation(cid, fid, status) VALUES(" +
 			customerId + ", " + fnum + ", " + "'" + status + "');";
 
