@@ -296,6 +296,7 @@ public class DBproject{
 					buttons[i].setBounds(80, x, 430, 35);
 					buttons[i].setHorizontalAlignment(SwingConstants.LEFT);
 					f.add(buttons[i]);
+					
 				}
 	
 
