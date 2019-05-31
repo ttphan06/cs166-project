@@ -266,10 +266,24 @@ public class DBproject{
 				System.out.println("10. < EXIT");
 				*/
 
-				JFrame frame = new JFrame("Airline Application");
-				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				frame.setSize(800,800);
-				frame.setVisible(true);
+				JFrame f = new JFrame("Airline Application"); 
+				JButton b=new JButton("Click Here");  
+				JButton b2=new JButton("Click Here"); 
+				b.setBounds(50,100,95,30);  
+				b2.setBounds(50,200,95,30);  
+				f.add(b); 
+				f.add(b2);   
+				f.setSize(400,400);  
+				f.setLayout(null);  
+				f.setVisible(true);   
+				f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				f.setSize(800,800);
+				f.setVisible(true);
+
+				
+
+
+
 
 				switch (readChoice()){
 					case 1: AddPlane(esql); break;
