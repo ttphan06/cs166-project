@@ -4,6 +4,7 @@ CREATE SEQUENCE pilot_number_seq START WITH 250;
 CREATE SEQUENCE flight_number_seq START WITH 2000;
 CREATE SEQUENCE customer_number_seq START WITH 250;
 CREATE SEQUENCE technician_number_seq START WITH 250;
+CREATE SEQUENCE reservation_number_seq START WITH 9985;
 
 
 CREATE OR REPLACE FUNCTION func_pilot() 
@@ -66,3 +67,16 @@ CREATE OR REPLACE FUNCTION func_technician()
     $BODY$
     LANGUAGE plpgsql VOLATILE;
 CREATE TRIGGER technician_trigger BEFORE INSERT ON Technician FOR EACH ROW EXECUTE PROCEDURE func_technician();
+
+
+
+CREATE OR REPLACE FUNCTION func_reservation() 
+    RETURNS trigger AS 
+    $BODY$ 
+    BEGIN  
+    new.rnum := nextval('reservation_number_seq'); 
+    RETURN new; 
+    END;  
+    $BODY$ 
+    LANGUAGE plpgsql VOLATILE; 
+CREATE TRIGGER reservation_trigger BEFORE INSERT ON Reservation FOR EACH ROW EXECUTE PROCEDURE func_reservation(); 

@@ -528,15 +528,16 @@ public class DBproject{
 		
 		// Given a customer and a flight that he/she wants to book, add a reservation to the DB
 
-		int option;
-			
+		int option, fnum, customerId;
+		String query; 
+		char status;
+
 		System.out.println("OPTIONS : ");
 		System.out.println(" --------- ");
 		System.out.println("1. Enter Customer ID ");
 		System.out.println("2. Create New Customer ");
 		
 		try{
-
 			do{
 				option = readChoice();
 				if (option == 1 || option == 2){
@@ -547,18 +548,46 @@ public class DBproject{
 			switch(option){
 				case 1:
 				System.out.println("Enter Customer ID: "); 
+				customerId = Integer.parseInt(in.readLine());
 				break;
 
 				case 2: 
 				AddCustomer(esql); 
 				break;
 			}
-		
-		}catch (Exception e) {
-			System.out.println("Invalid Input. Choose 1 or 2 ");
-		}
 
-		}
+			System.out.println("Enter Flight Number: ");
+			fnum = Integer.parseInt(in.readLine());
+
+			query = "SELECT p.seats - f.num_sold FROM ((FlightInfo i INNER JOIN Flight f ON i.flight_id = f.fnum) " +  
+			"INNER JOIN Plane p ON p.id = i.plane_id) WHERE f.fnum = " + fnum + ";";
+			List<List<String>> availableSeats = esql.executeQueryAndReturnResult(query);
+			String s = availableSeats.get(0).get(0);
+			int available = Integer.parseInt(s);
+
+			cid = customerId;
+			if (available > 0){
+				status = 'C';
+			} else{
+				status = 'W';
+			}
+
+			String query2 = "INSERT into Reservation(cid, fid, status) VALUES(" +
+			cid + ", " + fnum + ", " + "'" + status + "');";
+
+				esql.executeUpdate(query2);
+			
+		}catch(Exception e) {
+				System.err.println(e.getMessage());
+			}
+
+
+	}
+
+		
+
+
+		
 		
 	
 
