@@ -271,6 +271,8 @@ public class DBproject{
 				frame.setSize(800,800);
 				frame.setVisible(true);
 
+				p = new JPanel();
+				
 				switch (readChoice()){
 					case 1: AddPlane(esql); break;
 					case 2: AddPilot(esql); break;
