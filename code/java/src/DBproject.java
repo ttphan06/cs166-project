@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner;
 import javax.swing.*;
-
 import javax.naming.event.NamingExceptionEvent;
 
 /**
@@ -36,7 +35,7 @@ import javax.naming.event.NamingExceptionEvent;
  *
  */
 
-public class DBproject{
+public class DBproject {
 	//reference to physical database connection
 	private Connection _connection = null;
 	static BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
@@ -266,27 +265,6 @@ public class DBproject{
 				System.out.println("10. < EXIT");
 				*/
 
-				JFrame f = new JFrame("Airline Application"); 
-				JButton b=new JButton("Click Here");  
-				JButton b2=new JButton("Click Here"); 
-				b.setBounds(50,100,95,30);  
-				b2.setBounds(50,200,95,30);  
-				f.add(b); 
-				f.add(b2);   
-				f.setSize(400,400);  
-				f.setLayout(null);  
-				f.setVisible(true);   
-				f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				f.setSize(800,800);
-				f.setVisible(true);
-
-				
-
-
-
-
-				p = new JPanel();
-				
 				switch (readChoice()){
 					case 1: AddPlane(esql); break;
 					case 2: AddPilot(esql); break;
