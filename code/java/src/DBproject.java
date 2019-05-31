@@ -26,6 +26,7 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner;
+import javax.swing.*;
 
 import javax.naming.event.NamingExceptionEvent;
 
@@ -250,6 +251,7 @@ public class DBproject{
 
 			boolean keepon = true;
 			while(keepon){
+				/*
 				System.out.println("MAIN MENU");
 				System.out.println("---------");
 				System.out.println("1. Add Plane");
@@ -262,7 +264,13 @@ public class DBproject{
 				System.out.println("8. List total number of repairs per year in ascending order");
 				System.out.println("9. Find total number of passengers with a given status");
 				System.out.println("10. < EXIT");
-				
+				*/
+
+				JFrame frame = new JFrame("Airline Application");
+				frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				frame.setSize(800,800);
+				frame.setVisible(true);
+
 				switch (readChoice()){
 					case 1: AddPlane(esql); break;
 					case 2: AddPilot(esql); break;
