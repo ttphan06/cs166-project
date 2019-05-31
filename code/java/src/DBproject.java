@@ -269,7 +269,7 @@ public class DBproject{
 				JFrame f = new JFrame("Airline Application"); 
 				JButton[] buttons = new JButton[10];
 				JLabel label1 = new JLabel("MAIN MENU", SwingConstants.CENTER);
-				label1.setBounds(150,80,450,35);
+				label1.setBounds(150,80,430,35);
 				f.add(label1);
 				buttons[0] = new JButton("1. Add Plane");  
 				buttons[1]=new JButton("2. Add Pilot"); 
@@ -285,7 +285,7 @@ public class DBproject{
 			
 				for (int i =0; i < buttons.length - 1; i++ ){
 					x += 30;
-					buttons[i].setBounds(150, x, 450, 35);
+					buttons[i].setBounds(150, x, 430, 35);
 					buttons[i].setHorizontalAlignment(SwingConstants.LEFT);
 					
 					f.add(buttons[i]);
