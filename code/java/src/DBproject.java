@@ -343,6 +343,7 @@ public class DBproject {
 					System.out.print("Disconnecting from database...");
 					esql2.cleanup ();
 					System.out.println("Done\n\nBye !");
+					f.dispose();
 				}
 			});			
 
@@ -725,10 +726,19 @@ public class DBproject {
 
 
 	    try {
-		esql.executeQueryAndPrintResult(query);
+			List<List<String>> res = esql.executeQueryAndReturnResult(query);
+			String m = "Year   Repair\n";
+			for (int i = 0; i < res.size(); ++i) {
+				for (int j = 0; j < res.get(i).size(); ++j) {
+					m += res.get(i).get(j) + "   ";
+				}
+				m += "\n";
+			}
+			JOptionPane.showMessageDialog (null, m, "Number of Repair per Year", JOptionPane.INFORMATION_MESSAGE);
+
 	    }
 	    catch (Exception e) {
-		System.err.println(e.getMessage());
+			System.err.println(e.getMessage());
 	    }
 	}
 	
