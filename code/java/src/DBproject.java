@@ -413,17 +413,8 @@ public class DBproject {
 	}
         
 	public static void AddPilot(DBproject esql) {//2
-	    Scanner input = new Scanner(System.in);
-
-	
-	    System.out.println("Enter pilot full name");
-	    String pilotName = "'";
-	    pilotName += input.nextLine();
-	    pilotName += "'";
-	    System.out.println("Enter pilot nationality");
-	    String pilotNationality = "'";
-	    pilotNationality += input.nextLine();
-	    pilotNationality += "'";
+	    String pilotName = "'" + JOptionPane.showInputDialog("Enter pilot full name") + "'";
+	    String pilotNationality = "'" + JOptionPane.showInputDialog("Enter pilot nationality") + "'";
 	    
 	    String query = "INSERT INTO Pilot(fullname, nationality) VALUES (" + pilotName + "," + pilotNationality + ");";
 	    try {
@@ -595,12 +586,7 @@ public class DBproject {
 
 
 	public static void AddTechnician(DBproject esql) {//4
-	    Scanner input = new Scanner(System.in);
-	    
-	    
-	    System.out.println("Enter technician full name");
-	    String techName = "'" + input.nextLine() + "'";
-
+	    String techName = "'" + JOptionPane.showInputDialog("Enter technician full name") + "'";
 	    String query = "INSERT INTO Technician(full_name) VALUES (" 
 		+ techName + ");";
 	    try {
@@ -673,30 +659,23 @@ public class DBproject {
 
 	}
 
-		
-
-
-		
-		
-	
-
 	public static void ListNumberOfAvailableSeats(DBproject esql) {//6
 		// For flight number and date, find the number of availalbe seats (i.e. total plane capacity minus booked seats )
-	    Scanner input = new Scanner(System.in);
-	    System.out.println("Enter flight number");
-	    String fNumber = input.nextLine();
+	    String fNumber = JOptionPane.showInputDialog("Enter flight number");
 	    System.out.println("Enter departure date");
-	    String dDate = "'" + input.nextLine() + "'";
+	    String dDate = "'" + JOptionPane.showInputDialog("Enter departure date (YYYY-MM-DD)") + "'";
 	    String query = "SELECT p.seats - f.num_sold "
 		+ "FROM ((flightinfo i INNER JOIN flight f ON i.flight_id = f.fnum) "
 		+ "INNER JOIN plane p ON p.id = i.plane_id) "
 		+ "WHERE f.fnum = " + fNumber + " AND f.actual_departure_date = " + dDate +";";
 
 	    try {
-		esql.executeQueryAndPrintResult(query);
+			JOptionPane.showMessageDialog(null, "Available seats: " 
+				+ esql.executeQueryAndReturnResult(query).get(0).get(0),
+				"Number of available seats", JOptionPane.INFORMATION_MESSAGE);
 	    }
 	    catch (Exception e) {
-		System.err.println(e.getMessage());
+			System.err.println(e.getMessage());
 	    }
 	}
 
@@ -744,18 +723,17 @@ public class DBproject {
 	
 	public static void FindPassengersCountWithStatus(DBproject esql) {//9
 		// Find how many passengers there are with a status (i.e. W,C,R) and list that number.
-	    Scanner input = new Scanner(System.in);
-
-	    System.out.println("Enter flight number");
-	    String flightNum = input.nextLine();
-	    System.out.println("Enter status");
-	    String status = "'" + input.nextLine() + "'";
+	    String flightNum = JOptionPane.showInputDialog("Enter flight number");
+	    String status = "'" + JOptionPane.showInputDialog("Enter status") + "'";
 
 	    String query = "SELECT COUNT(r.status) FROM Reservation r WHERE r.fid = ";
 	    query += flightNum + "GROUP BY r.status HAVING r.status = " + status + ";";
 		
 	    try {
-		System.out.println("Number passenger: " + esql.executeQueryAndReturnResult(query).get(0).get(0));
+			JOptionPane.showMessageDialog(null, 
+				"Number passenger: " + esql.executeQueryAndReturnResult(query).get(0).get(0),
+				"Passenger with status",
+				JOptionPane.INFORMATION_MESSAGE);
 	    }
 	    catch (Exception e) {
 		System.err.println(e.getMessage());

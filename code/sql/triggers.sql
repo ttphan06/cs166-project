@@ -61,7 +61,7 @@ CREATE OR REPLACE FUNCTION func_technician()
     RETURNS trigger AS 
     $BODY$ 
     BEGIN  
-    new.fnum := nextval('technician_number_seq'); 
+    new.id := nextval('technician_number_seq'); 
     RETURN new; 
     END;  
     $BODY$
