@@ -27,7 +27,10 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner;
 import javax.swing.*;
+import java.awt.*;  
+import java.awt.event.*;
 import javax.naming.event.NamingExceptionEvent;
+
 
 /**
  * This class defines a simple embedded SQL utility class that is designed to
@@ -246,41 +249,108 @@ public class DBproject {
 			
 			esql = new DBproject (dbname, dbport, user, "");
 
-		
-
-			boolean keepon = true;
-			while(keepon){
-				/*
-				System.out.println("MAIN MENU");
-				System.out.println("---------");
-				System.out.println("1. Add Plane");
-				System.out.println("2. Add Pilot");
-				System.out.println("3. Add Flight");
-				System.out.println("4. Add Technician");
-				System.out.println("5. Book Flight");
-				System.out.println("6. List number of available seats for a given flight.");
-				System.out.println("7. List total number of repairs per plane in descending order");
-				System.out.println("8. List total number of repairs per year in ascending order");
-				System.out.println("9. Find total number of passengers with a given status");
-				System.out.println("10. < EXIT");
-				*/
-
-				switch (readChoice()){
-					case 1: AddPlane(esql); break;
-					case 2: AddPilot(esql); break;
-					case 3: AddFlight(esql); break;
-					case 4: AddTechnician(esql); break;
-					case 5: BookFlight(esql); break;
-					case 6: ListNumberOfAvailableSeats(esql); break;
-					case 7: ListsTotalNumberOfRepairsPerPlane(esql); break;
-					case 8: ListTotalNumberOfRepairsPerYear(esql); break;
-					case 9: FindPassengersCountWithStatus(esql); break;
-					case 10: keepon = false; break;
-				}
+			// HERE
+			JFrame f = new JFrame("Airline Application"); 
+			f.setVisible(true);   
+			f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			f.setSize(600,600);
+			f.setVisible(true);
+			f.setResizable(false);
+			JButton[] buttons = new JButton[10];
+			JLabel label1 = new JLabel("MAIN MENU", SwingConstants.CENTER);
+			label1.setBounds(80,40,430,35);
+			f.add(label1);
+			JPanel panel = new JPanel();
+			f.getContentPane().setLayout(null);
+			buttons[0] = new JButton("1. Add Plane");  
+			buttons[1]=new JButton("2. Add Pilot"); 
+			buttons[2]=new JButton("3. Add Flight");  
+			buttons[3]=new JButton("4. Add Technician"); 
+			buttons[4]=new JButton("5. Book Flight");  
+			buttons[5]=new JButton("6. List number of available seats for a given flight."); 
+			buttons[6]=new JButton("7. List total number of repairs per plane in descending order");  
+			buttons[7]=new JButton("8. List total number of repairs per year in ascending order"); 
+			buttons[8]=new JButton("9. Find total number of passengers with a given status");  
+			buttons[9]=new JButton("10. < EXIT"); 
+			int x = 40;
+			
+			for (int i =0; i < buttons.length; i++ ){
+				x += 40;
+				
+				buttons[i].setBounds(80, x, 430, 35);
+				buttons[i].setHorizontalAlignment(SwingConstants.LEFT);
+				f.add(buttons[i]);
+				
 			}
+
+			final DBproject esql2 = esql;
+			buttons[0].addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					AddPlane(esql2);
+				}
+			});
+
+			buttons[1].addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					AddPilot(esql2);
+				}
+			});
+
+			buttons[2].addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					AddFlight(esql2);
+				}
+			});
+
+			buttons[3].addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					AddTechnician(esql2);
+				}
+			});
+
+			buttons[4].addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					BookFlight(esql2);
+				}
+			});
+
+			buttons[5].addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					ListNumberOfAvailableSeats(esql2);
+				}
+			});
+
+			buttons[6].addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					ListsTotalNumberOfRepairsPerPlane(esql2);
+				}
+			});
+
+			buttons[7].addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					ListTotalNumberOfRepairsPerYear(esql2);
+				}
+			});
+
+			buttons[8].addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					FindPassengersCountWithStatus(esql2);
+				}
+			});
+
+			buttons[9].addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					System.out.print("Disconnecting from database...");
+					esql2.cleanup ();
+					System.out.println("Done\n\nBye !");
+				}
+			});			
+
+
 		}catch(Exception e){
 			System.err.println (e.getMessage ());
-		}finally{
+		
+		}/*finally{
 			try{
 				if(esql != null) {
 					System.out.print("Disconnecting from database...");
@@ -290,8 +360,9 @@ public class DBproject {
 			}catch(Exception e){
 				// ignored.
 			}
-		}
+		}*/
 	}
+
 
 	public static int readChoice() {
 		int input;
