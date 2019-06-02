@@ -335,8 +335,10 @@ public class DBproject {
 			f.setSize(200,200);
 			f.setVisible(true);
 			f.setResizable(false);
+			f.setLocationRelativeTo(null);
 			
 
+			
 		}catch(Exception e){
 			System.err.println (e.getMessage ());
 		
@@ -371,16 +373,30 @@ public class DBproject {
 	}//end readChoice
 
 	public static void AddPlane(DBproject esql) {//1
-
+		
+		String make, model, query;
+		int age, seats;
+		
 		try{
-			String make = "'" + JOptionPane.showInputDialog("Enter make") + "'";
-			String model = "'" + JOptionPane.showInputDialog("Enter model") + "'";
-			String age = JOptionPane.showInputDialog("Enter age");
-			String seats = JOptionPane.showInputDialog("Enter seats");
-			String query = "INSERT INTO Plane(make, model, age, seats) VALUES(" + 
+			
+	
+			make = "'" + JOptionPane.showInputDialog("Enter Make ") + "'";
+
+			
+			model = "'" + JOptionPane.showInputDialog("Enter Model ") + "'";
+
+			
+			age = Integer.parseInt(JOptionPane.showInputDialog("Enter Age "));
+
+			System.out.println("Seats: ");
+			seats = Integer.parseInt(JOptionPane.showInputDialog("Enter Seats "));
+
+			query = "INSERT INTO Plane(make, model, age, seats) VALUES(" + 
 			make  + ", " +  model  + ", " + age + ", " + seats + ")";
-			System.out.println(query);
+			
 			esql.executeUpdate(query);
+
+
 			
 		}catch (Exception e){
 			System.err.println(e.getMessage());
@@ -390,14 +406,39 @@ public class DBproject {
 	}
         
 	public static void AddPilot(DBproject esql) {//2
-	    String pilotName = "'" + JOptionPane.showInputDialog("Enter pilot full name") + "'";
-	    String pilotNationality = "'" + JOptionPane.showInputDialog("Enter pilot nationality") + "'";
+	    //String pilotName = "'" + JOptionPane.showInputDialog("Enter pilot full name") + "'";
+	    //String pilotNationality = "'" + JOptionPane.showInputDialog("Enter pilot nationality") + "'";
 	    
-	    String query = "INSERT INTO Pilot(fullname, nationality) VALUES (" + pilotName + "," + pilotNationality + ");";
-	    try {
+		
+		
+		JTextField f1 = new JTextField();
+		JTextField f2 = new JTextField();
+
+		
+
+		Object[] fields = {" ", "Name", f1, "Nationality", f2};
+	
+		JOptionPane.showConfirmDialog(null, fields, "About Pilot ..", JOptionPane.OK_CANCEL_OPTION);
+
+		String pilotName = "'" + f1.getText() + "'";
+		String pilotNationality = "'" + f2.getText() + "'";
+
+		String query = "INSERT INTO Pilot(fullname, nationality) VALUES (" + pilotName + "," + pilotNationality + ");";
+
+	    /*try {
 		esql.executeUpdate(query);
 	    } 
 	    catch(Exception e) {
+		System.err.println(e.getMessage());
+		}
+		*/
+		try {
+			esql.executeUpdate(query);
+			JOptionPane.showMessageDialog(null, 
+				"Pilot Added !", "Message",
+				JOptionPane.INFORMATION_MESSAGE);
+	    }
+	    catch (Exception e) {
 		System.err.println(e.getMessage());
 	    }
 
@@ -664,23 +705,10 @@ public class DBproject {
 		"order by count(r.plane_id) desc; ";
 
 	    try {
-			List<List<String>> res = esql.executeQueryAndReturnResult(query);
-			String m = "Plane\tnumber of repairs\n";
-			for (int i = 0; i < res.size(); ++i) {
-				for (int j = 0; j < res.get(i).size(); ++j) {
-					m += res.get(i).get(j) + "\t";
-				}
-				m += "\n";
-			}
-			JTextArea textArea = new JTextArea(m);
-			JScrollPane scrollPane = new JScrollPane(textArea);
-			textArea.setLineWrap(true);
-			textArea.setWrapStyleWord(true);
-			scrollPane.setPreferredSize(new Dimension(300, 400));
-			JOptionPane.showMessageDialog (null, scrollPane, "Repair List", JOptionPane.INFORMATION_MESSAGE);
+		esql.executeQueryAndPrintResult(query);
 	    }
 	    catch (Exception e) {
-			System.err.println(e.getMessage());
+		System.err.println(e.getMessage());
 	    }
 	}
 
@@ -696,19 +724,15 @@ public class DBproject {
 
 	    try {
 			List<List<String>> res = esql.executeQueryAndReturnResult(query);
-			String m = "Year\tRepair\n";
+			String m = "Year   Repair\n";
 			for (int i = 0; i < res.size(); ++i) {
 				for (int j = 0; j < res.get(i).size(); ++j) {
-					m += res.get(i).get(j) + "\t";
+					m += res.get(i).get(j) + "   ";
 				}
 				m += "\n";
 			}
-			JTextArea textArea = new JTextArea(m);
-			JScrollPane scrollPane = new JScrollPane(textArea);
-			textArea.setLineWrap(true);
-			textArea.setWrapStyleWord(true);
-			scrollPane.setPreferredSize(new Dimension(300, 400));			
-			JOptionPane.showMessageDialog (null, scrollPane, "Number of Repair per Year", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog (null, m, "Number of Repair per Year", JOptionPane.INFORMATION_MESSAGE);
+
 	    }
 	    catch (Exception e) {
 			System.err.println(e.getMessage());
