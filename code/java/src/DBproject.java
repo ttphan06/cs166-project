@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner;
 import javax.swing.*;
+//import sun.jvm.hotspot.tools.StackTrace;
 import java.awt.*;  
 import java.awt.event.*;
 import javax.naming.event.NamingExceptionEvent;
@@ -251,102 +252,90 @@ public class DBproject {
 
 			// HERE
 			JFrame f = new JFrame("Airline Application"); 
+			String[] test = {"1. Add Plane", "2. Add Pilot", "3. Add Flight", "4. Add Technician", "5. Book Flight",
+			 "6. List number of available seats for a given flight",
+			  "7. List total number of repairs per plane in descending order", "8. List total number of repairs per year in ascending order",
+			   "9. Find total number of passengers with a given status"};
+		
+			JComboBox cb = new JComboBox();
+				
+		
+			for (int i =0; i < test.length; i++){
+				cb.addItem(test[i]);
+			}
+	 
+			      
+			JLabel label1 = new JLabel("MAIN MENU", SwingConstants.CENTER);
+			label1.setFont(new Font("sans-serif", Font.BOLD, 18));
+			label1.setBounds(30,10,140,40);
+			f.add(label1);
+			
+			f.getContentPane().setLayout(null);
+			cb.setBounds(30, 55, 150, 30);
+			final DBproject esql2 = esql;
+			cb.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent event) {
+					//
+					// Get the source of the component, which is our combo
+					// box.
+					//
+					JComboBox cb = (JComboBox) event.getSource();
+	
+					Object selected = cb.getSelectedItem();
+					if(selected.toString().equals("1. Add Plane")){
+						AddPlane(esql2);
+					}
+				
+					else if(selected.toString().equals("2. Add Pilot")){
+						AddPilot(esql2); 
+
+					}
+					else if(selected.toString().equals("3. Add Flight")){
+						AddFlight(esql2); 
+
+					}
+					else if(selected.toString().equals("4. Add Technician")){
+						AddTechnician(esql2); 
+
+					}
+					else if(selected.toString().equals("5. Book Flight")){
+						BookFlight(esql2); 
+
+					}
+					else if(selected.toString().equals("6. List number of available seats for a given flight")){
+						ListNumberOfAvailableSeats(esql2); 
+
+					}
+					else if(selected.toString().equals("7. List total number of repairs per plane in descending order")){
+						ListsTotalNumberOfRepairsPerPlane(esql2); 
+					}
+					else if(selected.toString().equals("8. List total number of repairs per year in ascending order")){
+						ListTotalNumberOfRepairsPerYear(esql2); 
+	
+					}
+					else if(selected.toString().equals("9. Find total number of passengers with a given status")){
+						FindPassengersCountWithStatus(esql2); 
+					}
+				}
+			});
+
+			JButton exitButton = new JButton("Exit");
+			exitButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					System.exit(-1);
+				}
+			});
+			exitButton.setBounds(70, 110, 60, 50);
+
+			f.add(cb);
+			f.add(exitButton);
+			
 			f.setVisible(true);   
 			f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			f.setSize(600,600);
+			f.setSize(200,200);
 			f.setVisible(true);
 			f.setResizable(false);
-			JButton[] buttons = new JButton[10];
-			JLabel label1 = new JLabel("MAIN MENU", SwingConstants.CENTER);
-			label1.setBounds(80,40,430,35);
-			f.add(label1);
-			JPanel panel = new JPanel();
-			f.getContentPane().setLayout(null);
-			buttons[0] = new JButton("1. Add Plane");  
-			buttons[1]=new JButton("2. Add Pilot"); 
-			buttons[2]=new JButton("3. Add Flight");  
-			buttons[3]=new JButton("4. Add Technician"); 
-			buttons[4]=new JButton("5. Book Flight");  
-			buttons[5]=new JButton("6. List number of available seats for a given flight."); 
-			buttons[6]=new JButton("7. List total number of repairs per plane in descending order");  
-			buttons[7]=new JButton("8. List total number of repairs per year in ascending order"); 
-			buttons[8]=new JButton("9. Find total number of passengers with a given status");  
-			buttons[9]=new JButton("10. < EXIT"); 
-			int x = 40;
 			
-			for (int i =0; i < buttons.length; i++ ){
-				x += 40;
-				
-				buttons[i].setBounds(80, x, 430, 35);
-				buttons[i].setHorizontalAlignment(SwingConstants.LEFT);
-				f.add(buttons[i]);
-				
-			}
-
-			final DBproject esql2 = esql;
-			buttons[0].addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					AddPlane(esql2);
-				}
-			});
-
-			buttons[1].addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					AddPilot(esql2);
-				}
-			});
-
-			buttons[2].addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					AddFlight(esql2);
-				}
-			});
-
-			buttons[3].addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					AddTechnician(esql2);
-				}
-			});
-
-			buttons[4].addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					BookFlight(esql2);
-				}
-			});
-
-			buttons[5].addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					ListNumberOfAvailableSeats(esql2);
-				}
-			});
-
-			buttons[6].addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					ListsTotalNumberOfRepairsPerPlane(esql2);
-				}
-			});
-
-			buttons[7].addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					ListTotalNumberOfRepairsPerYear(esql2);
-				}
-			});
-
-			buttons[8].addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					FindPassengersCountWithStatus(esql2);
-				}
-			});
-
-			buttons[9].addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					System.out.print("Disconnecting from database...");
-					esql2.cleanup ();
-					System.out.println("Done\n\nBye !");
-					f.dispose();
-				}
-			});			
-
 
 		}catch(Exception e){
 			System.err.println (e.getMessage ());
