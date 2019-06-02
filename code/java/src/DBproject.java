@@ -371,25 +371,13 @@ public class DBproject {
 	}//end readChoice
 
 	public static void AddPlane(DBproject esql) {//1
-		
-		String make, model, query;
-		int age, seats;
-		
+
 		try{
-			
-			System.out.println("make: ");
-			make = "'" + in.readLine() + "'";
-
-			System.out.println("model: ");
-			model = "'" + in.readLine() + "'";
-
-			System.out.println("Age: ");
-			age = Integer.parseInt(in.readLine());
-
-			System.out.println("Seats: ");
-			seats = Integer.parseInt(in.readLine());
-
-			query = "INSERT INTO Plane(make, model, age, seats) VALUES(" + 
+			String make = "'" + JOptionPane.showInputDialog("Enter make") + "'";
+			String model = "'" + JOptionPane.showInputDialog("Enter model") + "'";
+			String age = JOptionPane.showInputDialog("Enter age");
+			String seats = JOptionPane.showInputDialog("Enter seats");
+			String query = "INSERT INTO Plane(make, model, age, seats) VALUES(" + 
 			make  + ", " +  model  + ", " + age + ", " + seats + ")";
 			System.out.println(query);
 			esql.executeUpdate(query);
@@ -676,10 +664,23 @@ public class DBproject {
 		"order by count(r.plane_id) desc; ";
 
 	    try {
-		esql.executeQueryAndPrintResult(query);
+			List<List<String>> res = esql.executeQueryAndReturnResult(query);
+			String m = "Plane\tnumber of repairs\n";
+			for (int i = 0; i < res.size(); ++i) {
+				for (int j = 0; j < res.get(i).size(); ++j) {
+					m += res.get(i).get(j) + "\t";
+				}
+				m += "\n";
+			}
+			JTextArea textArea = new JTextArea(m);
+			JScrollPane scrollPane = new JScrollPane(textArea);
+			textArea.setLineWrap(true);
+			textArea.setWrapStyleWord(true);
+			scrollPane.setPreferredSize(new Dimension(300, 400));
+			JOptionPane.showMessageDialog (null, scrollPane, "Repair List", JOptionPane.INFORMATION_MESSAGE);
 	    }
 	    catch (Exception e) {
-		System.err.println(e.getMessage());
+			System.err.println(e.getMessage());
 	    }
 	}
 
@@ -695,15 +696,19 @@ public class DBproject {
 
 	    try {
 			List<List<String>> res = esql.executeQueryAndReturnResult(query);
-			String m = "Year   Repair\n";
+			String m = "Year\tRepair\n";
 			for (int i = 0; i < res.size(); ++i) {
 				for (int j = 0; j < res.get(i).size(); ++j) {
-					m += res.get(i).get(j) + "   ";
+					m += res.get(i).get(j) + "\t";
 				}
 				m += "\n";
 			}
-			JOptionPane.showMessageDialog (null, m, "Number of Repair per Year", JOptionPane.INFORMATION_MESSAGE);
-
+			JTextArea textArea = new JTextArea(m);
+			JScrollPane scrollPane = new JScrollPane(textArea);
+			textArea.setLineWrap(true);
+			textArea.setWrapStyleWord(true);
+			scrollPane.setPreferredSize(new Dimension(300, 400));			
+			JOptionPane.showMessageDialog (null, scrollPane, "Number of Repair per Year", JOptionPane.INFORMATION_MESSAGE);
 	    }
 	    catch (Exception e) {
 			System.err.println(e.getMessage());
