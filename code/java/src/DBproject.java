@@ -376,41 +376,44 @@ public class DBproject {
 		
 		String make, model, query;
 		int age, seats;
+
+		JTextField f1 = new JTextField();
+		JTextField f2 = new JTextField();
+		JTextField f3 = new JTextField();
+		JTextField f4 = new JTextField();
 		
-		try{
-			
+
+		Object[] fields = {" ", "Make", f1, "Model", f2, "Age", f3, "Seats", f4};
 	
-			make = "'" + JOptionPane.showInputDialog("Enter Make ") + "'";
+		JOptionPane.showConfirmDialog(null, fields, "About Plane ..", JOptionPane.OK_CANCEL_OPTION);
 
-			
-			model = "'" + JOptionPane.showInputDialog("Enter Model ") + "'";
-
-			
-			age = Integer.parseInt(JOptionPane.showInputDialog("Enter Age "));
-
-			System.out.println("Seats: ");
-			seats = Integer.parseInt(JOptionPane.showInputDialog("Enter Seats "));
-
-			query = "INSERT INTO Plane(make, model, age, seats) VALUES(" + 
+		make = "'" + f1.getText() + "'";
+		model = "'" + f2.getText() + "'";
+		age = Integer.parseInt(f3.getText().toString());
+		seats = Integer.parseInt(f4.getText().toString());
+		
+		query = "INSERT INTO Plane(make, model, age, seats) VALUES(" + 
 			make  + ", " +  model  + ", " + age + ", " + seats + ")";
-			
+
+		try {
 			esql.executeUpdate(query);
+			JOptionPane.showMessageDialog(null, 
+				"Plane Added !", "Message",
+				JOptionPane.INFORMATION_MESSAGE);
+	    }
+	    catch (Exception e) {
+		System.err.println(e.getMessage());
+	    }
 
 
-			
-		}catch (Exception e){
-			System.err.println(e.getMessage());
-		}
+
+
 
 
 	}
         
 	public static void AddPilot(DBproject esql) {//2
-	    //String pilotName = "'" + JOptionPane.showInputDialog("Enter pilot full name") + "'";
-	    //String pilotNationality = "'" + JOptionPane.showInputDialog("Enter pilot nationality") + "'";
-	    
-		
-		
+	  
 		JTextField f1 = new JTextField();
 		JTextField f2 = new JTextField();
 
@@ -425,13 +428,6 @@ public class DBproject {
 
 		String query = "INSERT INTO Pilot(fullname, nationality) VALUES (" + pilotName + "," + pilotNationality + ");";
 
-	    /*try {
-		esql.executeUpdate(query);
-	    } 
-	    catch(Exception e) {
-		System.err.println(e.getMessage());
-		}
-		*/
 		try {
 			esql.executeUpdate(query);
 			JOptionPane.showMessageDialog(null, 
