@@ -643,10 +643,17 @@ public class DBproject {
 		+ techName + ");";
 
 		try {
-			esql.executeUpdate(query);
-			JOptionPane.showMessageDialog(null, 
-				"Technician Added", "Message",
-				JOptionPane.INFORMATION_MESSAGE);
+			if (!techName.equals("''")) {
+				esql.executeUpdate(query);
+				JOptionPane.showMessageDialog(null, 
+					"Technician Added", "Message",
+					JOptionPane.INFORMATION_MESSAGE);
+			}
+			else {
+					JOptionPane.showMessageDialog(null, 
+					"invalid input", "ERROR",
+					JOptionPane.ERROR_MESSAGE);
+			}
 	    }
 	    catch (Exception e) {
 		System.err.println(e.getMessage());
