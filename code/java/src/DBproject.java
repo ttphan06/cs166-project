@@ -267,7 +267,7 @@ public class DBproject {
 		
 			for (int i =0; i < test.length; i++){
 				cb.addItem(test[i]);
-			}
+			} 
 	 		
 			      
 			JLabel label1 = new JLabel("MAIN MENU", SwingConstants.CENTER);
