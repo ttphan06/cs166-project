@@ -478,23 +478,18 @@ public class DBproject {
 	
 		
 		try{
-			while(true){
-				try {
-					JOptionPane.showConfirmDialog(null, fields, "About Flight ..", JOptionPane.OK_CANCEL_OPTION);
-					actualDepartureDate = f4.getText().toString();
-					actualArrivalDate = f5.getText().toString();
-		
-					departureDate = new SimpleDateFormat("MM-dd-yyyy").parse(actualDepartureDate);
-					arrivalDate = new SimpleDateFormat("MM-dd-yyyy").parse(actualArrivalDate);
-					break;
-					// System.out.println(departureDate.getClass().getName());
-				} catch (Exception e){
-					
-					JOptionPane.showMessageDialog(null, "date error");
-					
-				} 
-		
-			}
+			try {
+				JOptionPane.showConfirmDialog(null, fields, "About Flight ..", JOptionPane.OK_CANCEL_OPTION);
+				actualDepartureDate = f4.getText().toString();
+				actualArrivalDate = f5.getText().toString();
+	
+				departureDate = new SimpleDateFormat("MM-dd-yyyy").parse(actualDepartureDate);
+				arrivalDate = new SimpleDateFormat("MM-dd-yyyy").parse(actualArrivalDate);
+
+				// System.out.println(departureDate.getClass().getName());
+			} catch (Exception e){
+				JOptionPane.showMessageDialog(null, "date error");
+			} 
 
 			costOfFlight = Integer.parseInt(f1.getText().toString());
 			numberOfSold = Integer.parseInt(f2.getText().toString());

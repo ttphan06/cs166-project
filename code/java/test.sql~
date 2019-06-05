@@ -1,3 +1,3 @@
 select *
-from plane
-where plane.age = 'aa';
+from flightinfo
+where flightinfo.plane_id = 0;

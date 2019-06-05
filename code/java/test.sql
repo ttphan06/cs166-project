@@ -1,3 +1,3 @@
 select *
-from plane
-where plane.model = 111;
+from flight
+where flight.fnum = 2000;
