@@ -440,16 +440,18 @@ public class DBproject {
 		String query = "INSERT INTO Pilot(fullname, nationality) VALUES (" + pilotName + "," + pilotNationality + ");";
 
 		try {
-			esql.executeUpdate(query);
-			JOptionPane.showMessageDialog(null, 
-				"Pilot Added", "Message",
-				JOptionPane.INFORMATION_MESSAGE);
+			if (!(pilotName.equals("''")) && !(pilotNationality.equals("''"))) {
+				esql.executeUpdate(query);
+		    	JOptionPane.showMessageDialog(null, "Pilot Added", "Message", JOptionPane.INFORMATION_MESSAGE);
+			}
+			else {
+				JOptionPane.showMessageDialog(null, "invalid input", "ERROR", JOptionPane.ERROR_MESSAGE);
+			}	
+
 	    }
 	    catch (Exception e) {
 		System.err.println(e.getMessage());
 	    }
-
-	    
 	}
 
 	public static void AddFlight(DBproject esql) {//3

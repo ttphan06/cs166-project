@@ -1,3 +1,3 @@
 select *
-from technician
-where full_name = 'carlos v';
+from plane
+where plane.model = 111;
