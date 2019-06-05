@@ -23,10 +23,14 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.SocketException;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner;
 import javax.swing.*;
+
+import jdk.jfr.Experimental;
+
 //import sun.jvm.hotspot.tools.StackTrace;
 import java.awt.*;  
 import java.awt.event.*;
@@ -273,6 +277,8 @@ public class DBproject {
 			f.getContentPane().setLayout(null);
 			cb.setBounds(30, 55, 150, 30);
 			final DBproject esql2 = esql;
+			
+
 			cb.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent event) {
 					//
@@ -320,6 +326,9 @@ public class DBproject {
 			});
 
 			JButton exitButton = new JButton("Exit");
+			exitButton.setOpaque(true);
+			exitButton.setForeground(Color.red);
+			
 			exitButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					System.exit(-1);
@@ -337,7 +346,7 @@ public class DBproject {
 			f.setResizable(false);
 			f.setLocationRelativeTo(null);
 			
-
+			
 			
 		}catch(Exception e){
 			System.err.println (e.getMessage ());
@@ -406,10 +415,6 @@ public class DBproject {
 	    }
 
 
-
-
-
-
 	}
         
 	public static void AddPilot(DBproject esql) {//2
@@ -431,7 +436,7 @@ public class DBproject {
 		try {
 			esql.executeUpdate(query);
 			JOptionPane.showMessageDialog(null, 
-				"Pilot Added !", "Message",
+				"Pilot Added", "Message",
 				JOptionPane.INFORMATION_MESSAGE);
 	    }
 	    catch (Exception e) {
@@ -446,87 +451,106 @@ public class DBproject {
 
 		Date departureDate = null, arrivalDate = null;
 		int pilotId, planeId, costOfFlight, numberOfSold, numberOfStops;
-		String actualDepartureDate, actualArrivalDate, airportArrival, airportDeparture, getId, query; 
+		String actualDepartureDate, actualArrivalDate, airportArrival, airportDeparture, getId, query;
+		
 
+
+		JTextField f1 = new JTextField();
+		JTextField f2 = new JTextField();
+		JTextField f3 = new JTextField();
+		JTextField f4 = new JTextField();
+		JTextField f5 = new JTextField();
+		JTextField f6 = new JTextField();
+		JTextField f7 = new JTextField();
+		JTextField f8 = new JTextField();
+		
+
+		Object[] fields = {" ", "Cost", f1, "Number Sold", f2, "Number of Stops", f3, "Actual Departure Date (MM-dd-yyyy)", f4, 
+		"Actual Arrival Date (MM-dd-yyyy)", f5, "Airport Arrival", f6, "Airport Departure", f7};
+	
+		
 		try{
-			
-			System.out.println("Enter Plane and Pilot ID: ");
-			System.out.println("----------------------------");
-			System.out.println("Pilot id: ");
-			pilotId = Integer.parseInt(in.readLine());
+			while(true){
+				try {
+					JOptionPane.showConfirmDialog(null, fields, "About Flight ..", JOptionPane.OK_CANCEL_OPTION);
+					actualDepartureDate = f4.getText().toString();
+					actualArrivalDate = f5.getText().toString();
+		
+					departureDate = new SimpleDateFormat("MM-dd-yyyy").parse(actualDepartureDate);
+					arrivalDate = new SimpleDateFormat("MM-dd-yyyy").parse(actualArrivalDate);
+					break;
+					// System.out.println(departureDate.getClass().getName());
+				} catch (Exception e){
+					
+					JOptionPane.showMessageDialog(null, "date error");
+					
+				} 
+		
+			}
 
-
-			System.out.println("Plane id: ");
-			planeId = Integer.parseInt(in.readLine());
-
-			System.out.println("Enter Flight information: ");
-			System.out.println("---------------------------");
-
-			System.out.println("cost: ");
-			costOfFlight = Integer.parseInt(in.readLine());
-
-			System.out.println("number sold: ");
-			numberOfSold = Integer.parseInt(in.readLine());
-
-			System.out.println("number of stops: ");
-			numberOfStops = Integer.parseInt(in.readLine());
-
-
-			
-			try {
-
-				System.out.println("actual departure date: (MM-dd-yyyy) ");
-				actualDepartureDate = in.readLine();
-
-				System.out.println("actual arrival date: (MM-dd-yyyy) ");
-				actualArrivalDate = in.readLine();
-
-				departureDate = new SimpleDateFormat("MM-dd-yyyy").parse(actualDepartureDate);
-				arrivalDate = new SimpleDateFormat("MM-dd-yyyy").parse(actualArrivalDate);
-				// System.out.println(departureDate.getClass().getName());
-			} catch (Exception e){
-				System.err.println(e.getMessage());
-			} 
-
-
-			System.out.println("airport arrival: ");
-			airportArrival = "'" + in.readLine() + "'";
-
-			System.out.println("airport departure: ");
-			airportDeparture = "'" + in.readLine() + "'";
-
+			costOfFlight = Integer.parseInt(f1.getText().toString());
+			numberOfSold = Integer.parseInt(f2.getText().toString());
+			numberOfStops = Integer.parseInt(f3.getText().toString());
+		
+			airportArrival = "'" + f6.getText() + "'";
+			airportDeparture = "'" + f7.getText() + "'";
 			
 			query = "INSERT INTO Flight(cost, num_sold, num_stops, actual_departure_date, actual_arrival_date, arrival_airport, departure_airport) VALUES(" + 
-			costOfFlight  + ", " +  numberOfSold  + ", " + numberOfStops + ", " + "'" +
-			departureDate + "'" + ", " + "'" + arrivalDate + "'" + ", " +
-			airportArrival +  ", " + airportDeparture + "); ";
+				costOfFlight  + ", " +  numberOfSold  + ", " + numberOfStops + ", " + "'" +
+				departureDate + "'" + ", " + "'" + arrivalDate + "'" + ", " +
+				airportArrival +  ", " + airportDeparture + "); ";
 			
-			System.out.println(query); // test query
-			esql.executeUpdate(query);
+			
 
+
+			try {
+				esql.executeUpdate(query);
+				JOptionPane.showMessageDialog(null, 
+					"Plane Added", "Message",
+					JOptionPane.INFORMATION_MESSAGE);
+			}
+			catch (Exception e) {
+			System.err.println(e.getMessage());
+			}
+
+			JTextField ff1 = new JTextField();
+			JTextField ff2 = new JTextField();
 		
+			Object[] fields1 = {" ", "Pilot ID", ff1, "Plane ID", ff2};
+		
+			JOptionPane.showConfirmDialog(null, fields1, " .. ", JOptionPane.OK_CANCEL_OPTION);
+
+			pilotId = Integer.parseInt(ff1.getText().toString());
+			planeId = Integer.parseInt(ff2.getText().toString());
+
 			getId = "SELECT Flight.fnum FROM Flight WHERE Flight.actual_departure_date = " + 
 			"'" + departureDate + "'" + 
 			" AND Flight.actual_arrival_date = " + 
 			"'" + arrivalDate + "'" + "; ";
 			
-			System.out.println(getId);
+			try{
 			
-			List<List<String>> record = esql.executeQueryAndReturnResult(getId);
-			String s = record.get(0).get(0);
-			int id = Integer.parseInt(s);
-			String query0 = "INSERT INTO FlightInfo VALUES (" + 
-			id + ", " + id + ", " +
-			pilotId + ", " + planeId + ");";
-			System.out.println(id);
-			esql.executeUpdate(query0);
-			
+				List<List<String>> record = esql.executeQueryAndReturnResult(getId);
+				String s = record.get(0).get(0);
+				int id = Integer.parseInt(s);
 
+				String query0 = "INSERT INTO FlightInfo VALUES (" + 
+				id + ", " + id + ", " +
+				pilotId + ", " + planeId + ");";
+
+				esql.executeUpdate(query0);
 			
-		}catch (Exception e){
-			System.err.println(e.getMessage());
-		}
+			}catch (Exception e){
+				JOptionPane.showMessageDialog(null, "error");
+			}
+		
+	}catch(Exception e){
+		JOptionPane.showMessageDialog(null, "canceled");
 	}
+}
+	
+
+
 
 	public static int AddCustomer(DBproject esql){ //Add Customer
 
@@ -582,6 +606,7 @@ public class DBproject {
 
 
 			List<List<String>> customerId = esql.executeQueryAndReturnResult(query2);
+			
 			String s = customerId.get(0).get(0);
 			cid = Integer.parseInt(s);
 
@@ -600,77 +625,116 @@ public class DBproject {
 
 
 	public static void AddTechnician(DBproject esql) {//4
-	    String techName = "'" + JOptionPane.showInputDialog("Enter technician full name") + "'";
-	    String query = "INSERT INTO Technician(full_name) VALUES (" 
+	    
+	
+		JTextField f1 = new JTextField();
+	
+
+		Object[] fields = {" ", "Name", f1};
+	
+		JOptionPane.showConfirmDialog(null, fields, "About Technician ..", JOptionPane.OK_CANCEL_OPTION);
+
+		String techName = "'" + f1.getText().toString() + "'";
+		
+		String query = "INSERT INTO Technician(full_name) VALUES (" 
 		+ techName + ");";
-	    try {
-		esql.executeUpdate(query);
+
+		try {
+			esql.executeUpdate(query);
+			JOptionPane.showMessageDialog(null, 
+				"Technician Added", "Message",
+				JOptionPane.INFORMATION_MESSAGE);
 	    }
-	    catch(Exception e) {
+	    catch (Exception e) {
 		System.err.println(e.getMessage());
 	    }
+
+
+
 	}
 
 	public static void BookFlight(DBproject esql) {//5
 		
 		// Given a customer and a flight that he/she wants to book, add a reservation to the DB
 
-		int option, fnum, customerId = 0;
+		
+		int fnum, customerId = 0;
 		String query; 
 		char status;
-
+		
+		/*
 		System.out.println("OPTIONS : ");
 		System.out.println(" --------- ");
 		System.out.println("1. Enter Customer ID ");
 		System.out.println("2. Create New Customer ");
-		
-		try{
-			do{
-				option = readChoice();
-				if (option == 1 || option == 2){
-					break;
-				}
-			} while(true);
+		*/
+		JTextField f1 = new JTextField();
+		JButton yesButton = new JButton("Yes ");
+		JButton noButton = new JButton("No ");
+		Object[] fields = {" ", "Create new customer ? ", yesButton, noButton};
+	
+	
 
-			switch(option){
-				case 1:
-				System.out.println("Enter Customer ID: "); 
-				customerId = Integer.parseInt(in.readLine());
-				break;
+		final DBproject esql2 = esql;
+		yesButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				AddCustomer(esql2);
+			}
+		});
+		noButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JOptionPane.getRootFrame().dispose();   
+				int fnum, customerId = 0;
+				String query; 
+				char status;
 
-				case 2: 
-				customerId = AddCustomer(esql); 
+				JTextField f1 = new JTextField();
+				JTextField f2 = new JTextField();
+				JTextField f3 = new JTextField();
+				JTextField f4 = new JTextField();
 				
-				break;
-			}
+				try{
+				
+					Object[] fields = {" ", "Flight #", f1, "Customer ID", f2};
+				
+					JOptionPane.showConfirmDialog(null, fields, "About Plane ..", JOptionPane.OK_CANCEL_OPTION);
 
-			System.out.println("Enter Flight Number: ");
-			fnum = Integer.parseInt(in.readLine());
-
-			query = "SELECT p.seats - f.num_sold FROM ((FlightInfo i INNER JOIN Flight f ON i.flight_id = f.fnum) " +  
-			"INNER JOIN Plane p ON p.id = i.plane_id) WHERE f.fnum = " + fnum + ";";
-			List<List<String>> availableSeats = esql.executeQueryAndReturnResult(query);
-			String s = availableSeats.get(0).get(0);
-			int available = Integer.parseInt(s);
-
-			if (available > 0){
-				status = 'C';
-				String query3 = "UPDATE Flight SET num_sold = num_sold + 1 WHERE fnum = " + fnum + "; ";
-				esql.executeUpdate(query3);
-			} else{
-				status = 'W';
-			}
-			System.out.println("You reservation status: " + status);
-			String query2 = "INSERT into Reservation(cid, fid, status) VALUES(" +
-			customerId + ", " + fnum + ", " + "'" + status + "');";
-
-				esql.executeUpdate(query2);
+					fnum = Integer.parseInt(f1.getText().toString());
+					customerId = Integer.parseInt(f2.getText().toString());
+					
+					query = "SELECT p.seats - f.num_sold FROM ((FlightInfo i INNER JOIN Flight f ON i.flight_id = f.fnum) " +  
+						"INNER JOIN Plane p ON p.id = i.plane_id) WHERE f.fnum = " + fnum + ";";
+						List<List<String>> availableSeats = esql.executeQueryAndReturnResult(query);
+						String s = availableSeats.get(0).get(0);
+						int available = Integer.parseInt(s);
 			
-		}catch(Exception e) {
-				System.err.println(e.getMessage());
+						if (available > 0){
+							status = 'C';
+							String query3 = "UPDATE Flight SET num_sold = num_sold + 1 WHERE fnum = " + fnum + "; ";
+							esql.executeUpdate(query3);
+						} else{
+							status = 'W';
+						}
+
+						String query2 = "INSERT into Reservation(cid, fid, status) VALUES(" +
+						customerId + ", " + fnum + ", " + "'" + status + "');";
+					
+						
+						esql.executeUpdate(query2);
+						JOptionPane.showMessageDialog(null, 
+							"Booked Flight", "Message",
+							JOptionPane.INFORMATION_MESSAGE);
+
 			}
+		catch(Exception ex){
+			System.err.println(ex.getMessage());
+		}
+		}
+	});
 
-
+		JOptionPane.showConfirmDialog(null, fields, "Book Flight", JOptionPane.OK_CANCEL_OPTION);
+		
+		
 	}
 
 	public static void ListNumberOfAvailableSeats(DBproject esql) {//6
