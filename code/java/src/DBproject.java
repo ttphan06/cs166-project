@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import javax.swing.*;
 
+
 //import jdk.jfr.Experimental;
 
 //import sun.jvm.hotspot.tools.StackTrace;
@@ -260,7 +261,6 @@ public class DBproject {
 			 "6. List number of available seats for a given flight",
 			  "7. List total number of repairs per plane in descending order", "8. List total number of repairs per year in ascending order",
 			   "9. Find total number of passengers with a given status"};
-		
 			
 			JComboBox cb = new JComboBox();
 				
@@ -326,6 +326,7 @@ public class DBproject {
 				}
 			});
 
+
 			JButton exitButton = new JButton("Exit");
 			exitButton.setOpaque(true);
 			exitButton.setForeground(Color.red);
@@ -339,6 +340,7 @@ public class DBproject {
 				}
 			});
 			exitButton.setBounds(70, 110, 60, 50);
+
 
 			f.add(cb);
 			f.add(exitButton);
@@ -761,6 +763,7 @@ public class DBproject {
 	    }
 	}
 
+
 	public static void ListsTotalNumberOfRepairsPerPlane(DBproject esql) {//7
 		// Count number of repairs per planes and list them in descending order
 		String query = "SELECT r.plane_id, count(r.plane_id)" + 
@@ -801,18 +804,22 @@ public class DBproject {
 
 	    try {
 			List<List<String>> res = esql.executeQueryAndReturnResult(query);
-			String m = "Year   Repair\n";
+			String m = "Year\tRepair\n";
 			for (int i = 0; i < res.size(); ++i) {
 				for (int j = 0; j < res.get(i).size(); ++j) {
-					m += res.get(i).get(j) + "   ";
+					m += res.get(i).get(j) + "\t";
 				}
 				m += "\n";
 			}
-			JOptionPane.showMessageDialog (null, m, "Number of Repair per Year", JOptionPane.INFORMATION_MESSAGE);
-
+			JTextArea textArea = new JTextArea(m);
+			JScrollPane scrollPane = new JScrollPane(textArea);
+			textArea.setLineWrap(true);
+			textArea.setWrapStyleWord(true);
+			scrollPane.setPreferredSize(new Dimension(300, 400));			
+			JOptionPane.showMessageDialog (null, scrollPane, "Number of Repair per Year", JOptionPane.INFORMATION_MESSAGE);
 	    }
 	    catch (Exception e) {
-			System.err.println(e.getMessage());
+			JOptionPane.showMessageDialog(null, e.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 	    }
 	}
 	
