@@ -440,16 +440,18 @@ public class DBproject {
 		String query = "INSERT INTO Pilot(fullname, nationality) VALUES (" + pilotName + "," + pilotNationality + ");";
 
 		try {
-			esql.executeUpdate(query);
-			JOptionPane.showMessageDialog(null, 
-				"Pilot Added", "Message",
-				JOptionPane.INFORMATION_MESSAGE);
+			if (!(pilotName.equals("''")) && !(pilotNationality.equals("''"))) {
+				esql.executeUpdate(query);
+		    	JOptionPane.showMessageDialog(null, "Pilot Added", "Message", JOptionPane.INFORMATION_MESSAGE);
+			}
+			else {
+				JOptionPane.showMessageDialog(null, "invalid input", "ERROR", JOptionPane.ERROR_MESSAGE);
+			}	
+
 	    }
 	    catch (Exception e) {
 		System.err.println(e.getMessage());
 	    }
-
-	    
 	}
 
 	public static void AddFlight(DBproject esql) {//3
@@ -476,23 +478,18 @@ public class DBproject {
 	
 		
 		try{
-			while(true){
-				try {
-					JOptionPane.showConfirmDialog(null, fields, "About Flight ..", JOptionPane.OK_CANCEL_OPTION);
-					actualDepartureDate = f4.getText().toString();
-					actualArrivalDate = f5.getText().toString();
-		
-					departureDate = new SimpleDateFormat("MM-dd-yyyy").parse(actualDepartureDate);
-					arrivalDate = new SimpleDateFormat("MM-dd-yyyy").parse(actualArrivalDate);
-					break;
-					// System.out.println(departureDate.getClass().getName());
-				} catch (Exception e){
-					
-					JOptionPane.showMessageDialog(null, "date error");
-					
-				} 
-		
-			}
+			try {
+				JOptionPane.showConfirmDialog(null, fields, "About Flight ..", JOptionPane.OK_CANCEL_OPTION);
+				actualDepartureDate = f4.getText().toString();
+				actualArrivalDate = f5.getText().toString();
+	
+				departureDate = new SimpleDateFormat("MM-dd-yyyy").parse(actualDepartureDate);
+				arrivalDate = new SimpleDateFormat("MM-dd-yyyy").parse(actualArrivalDate);
+
+				// System.out.println(departureDate.getClass().getName());
+			} catch (Exception e){
+				JOptionPane.showMessageDialog(null, "date error");
+			} 
 
 			costOfFlight = Integer.parseInt(f1.getText().toString());
 			numberOfSold = Integer.parseInt(f2.getText().toString());
