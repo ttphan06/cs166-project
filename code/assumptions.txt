@@ -1,36 +1,11 @@
-"Assumptions" (in process)
+ASSUMPTION:
+	Add Plane, Add Pilot, Add Flight, Add Technician will use trigger to generate
+	unique primary key
 
-#### Testing Add Plane ####
+	Add Flight option will prompt user for necessary input to update flight table
+	and flightinfo table
 
-
-liamhan_DB=# SELECT * FROM Plane WHERE Plane.make = 'liam';
-   id   |               make               |                              model                               | age | seats 
---------+----------------------------------+------------------------------------------------------------------+-----+-------
- 203030 | liam                             | han                                                              |  30 |    30
-
-
-
-### ADDING FLIGHT INFO ###
-
-NEED TO CREATE TRIGGER, PROCEDURE FOR fnum and fiid
-with a sequence starting from 2001. 
-
-
-
-#### Testing Add Flight ####
-
-INSERT INTO Flight VALUES(3030303, 3, 3, 3, 'Sun Sep 22 00:00:00 PDT 2002', 'Tue Sep 23 00:00:00 PDT 2003', '3', '3')
-
-psql -h localhost -p 9999 liamhan_DB 
-psql (11.3)
-Type "help" for help.
-
-liamhan_DB=# SELECT * FROM Flight WHERE Flight.fnum = 3030303;
-
-
-  fnum   | cost | num_sold | num_stops | actual_departure_date | actual_arrival_date | arrival_airport | departure_airport 
----------+------+----------+-----------+-----------------------+---------------------+-----------------+-------------------
- 3030303 |    3 |        3 |         3 | 2002-09-22            | 2003-09-23          | 3               | 3    
-(1 row)
+	Book Flight option will ask customer for their information if they are new
+	customer and update customer table. 
 
 

@@ -69,7 +69,6 @@ CREATE OR REPLACE FUNCTION func_technician()
 CREATE TRIGGER technician_trigger BEFORE INSERT ON Technician FOR EACH ROW EXECUTE PROCEDURE func_technician();
 
 
-
 CREATE OR REPLACE FUNCTION func_reservation() 
     RETURNS trigger AS 
     $BODY$ 
@@ -79,4 +78,4 @@ CREATE OR REPLACE FUNCTION func_reservation()
     END;  
     $BODY$ 
     LANGUAGE plpgsql VOLATILE; 
-CREATE TRIGGER reservation_trigger BEFORE INSERT ON Reservation FOR EACH ROW EXECUTE PROCEDURE func_reservation(); 
+CREATE TRIGGER reservation_trigger BEFORE INSERT ON Reservation FOR EACH ROW EXECUTE PROCEDURE func_reservation();

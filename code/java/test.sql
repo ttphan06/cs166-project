@@ -1,3 +1,3 @@
 select *
-from plane p
-where p.make = 'honda';
+from technician
+where full_name = 'carlos v';
