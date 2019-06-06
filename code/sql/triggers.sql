@@ -31,8 +31,6 @@ CREATE OR REPLACE FUNCTION func_customer()
 CREATE TRIGGER customer_trigger BEFORE INSERT ON Customer FOR EACH ROW EXECUTE PROCEDURE func_customer(); 
 
 
-
-
 CREATE OR REPLACE FUNCTION func_plane() 
     RETURNS trigger AS 
     $BODY$ 

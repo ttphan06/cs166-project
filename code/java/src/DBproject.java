@@ -370,7 +370,6 @@ public class DBproject {
 		}*/
 	}
 
-
 	public static int readChoice() {
 		int input;
 		// returns only if a correct value is given.
@@ -428,7 +427,6 @@ public class DBproject {
 		JTextField f1 = new JTextField();
 		JTextField f2 = new JTextField();
 
-		
 
 		Object[] fields = {" ", "Name", f1, "Nationality", f2};
 	
@@ -454,6 +452,7 @@ public class DBproject {
 	    }
 	}
 
+
 	public static void AddFlight(DBproject esql) {//3
 		// Given a pilot, plane and flight, adds a flight in the DB
 
@@ -461,7 +460,6 @@ public class DBproject {
 		int pilotId, planeId, costOfFlight, numberOfSold, numberOfStops;
 		String actualDepartureDate, actualArrivalDate, airportArrival, airportDeparture, getId, query;
 		
-
 
 		JTextField f1 = new JTextField();
 		JTextField f2 = new JTextField();
@@ -503,9 +501,6 @@ public class DBproject {
 				departureDate + "'" + ", " + "'" + arrivalDate + "'" + ", " +
 				airportArrival +  ", " + airportDeparture + "); ";
 			
-			
-
-
 			try {
 				esql.executeUpdate(query);
 				JOptionPane.showMessageDialog(null, 
@@ -563,40 +558,35 @@ public class DBproject {
 		Date dob = null;
 		int cid = 0;
 
+
+		JTextField f1 = new JTextField();
+		JTextField f2 = new JTextField();
+		JTextField f3 = new JTextField();
+		JTextField f4 = new JTextField();
+		JTextField f5 = new JTextField();
+		JTextField f6 = new JTextField();
+		JTextField f7 = new JTextField();
+		JTextField f8 = new JTextField();
+		
+
+		Object[] fields = {" ", "First Name", f1, "Last Name", f2, "Gender: (M,F)", f3, "DOB (MM-dd-yyyy)", f4, 
+		"Address", f5, "Phone Number", f6, "Zip Code", f7};
 	
+	
+
 		try {
+			JOptionPane.showConfirmDialog(null, fields, "About Flight ..", JOptionPane.OK_CANCEL_OPTION);
+			birthDate = f4.getText().toString();
+			dob = new SimpleDateFormat("MM-dd-yyyy").parse(birthDate);
+		
 
-			System.out.println("First name: ");
-			fname = "'" + in.readLine() + "'";
+			fname = "'" + f1.getText().toString() + "'";
+			lname = "'" + f2.getText().toString() + "'";
+			gtype = f3.getText().charAt(0);
+			address = "'" + f5.getText().toString() + "'";
+			phone = "'" + f6.getText().toString() + "'";
+			zipcode = "'" + f7.getText().toString() + "'";
 
-			System.out.println("Last name: ");
-			lname = "'" + in.readLine() + "'";
-
-			System.out.println("Gender: (M, F) ");
-			gtype = in.readLine().charAt(0);
-
-	
-			do{
-				try {
-					System.out.println("Date of birth: (MM-dd-yyyy)");
-					birthDate = in.readLine();
-					dob = new SimpleDateFormat("MM-dd-yyyy").parse(birthDate);	
-					break;
-				} catch (Exception e){
-					System.err.println(e.getMessage());
-					System.out.println("Enter correct date ");
-				}
-			} while(true);
-
-
-			System.out.println("Address: ");
-			address = "'" + in.readLine() + "'";
-			
-			System.out.println("phone: ");
-			phone = "'" + in.readLine() + "'";
-
-			System.out.println("zipcode: ");
-			zipcode = "'" + in.readLine() + "'";
 
 			query = "INSERT INTO Customer(fname, lname, gtype, dob, address, phone, zipcode) VALUES(" +
 			fname + ", " + lname + ", " + "'" + gtype + "', " + "'" + dob + "', " + address + ", " +
@@ -609,30 +599,26 @@ public class DBproject {
 
 
 			List<List<String>> customerId = esql.executeQueryAndReturnResult(query2);
+
 			
 			String s = customerId.get(0).get(0);
 			cid = Integer.parseInt(s);
 
 		} catch(Exception e){
 			System.err.println(e.getMessage());
-		} finally {
-			System.out.println("*Customer created*"); 
-			System.out.println("Book a flight ");
-			System.out.println("------------------");
-		}
+		} 
+			 
 
 		return cid;
 
-	}
-
+	} // END CUSTOMER
 
 
 	public static void AddTechnician(DBproject esql) {//4
 	    
-	
+		
 		JTextField f1 = new JTextField();
-	
-
+		
 		Object[] fields = {" ", "Name", f1};
 	
 		JOptionPane.showConfirmDialog(null, fields, "About Technician ..", JOptionPane.OK_CANCEL_OPTION);
@@ -658,8 +644,6 @@ public class DBproject {
 	    catch (Exception e) {
 		System.err.println(e.getMessage());
 	    }
-
-
 
 	}
 
@@ -688,7 +672,51 @@ public class DBproject {
 		final DBproject esql2 = esql;
 		yesButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				AddCustomer(esql2);
+				JOptionPane.getRootFrame().dispose(); 
+				int customerId = 0, fnum;
+				String query; 
+				char status;
+				
+				customerId = AddCustomer(esql2);
+				JOptionPane.getRootFrame().dispose(); 
+				JTextField f1 = new JTextField();
+
+				try{
+				
+					Object[] fields = {" ", "Flight #", f1};
+				
+					JOptionPane.showConfirmDialog(null, fields, "Book Flight", JOptionPane.OK_CANCEL_OPTION);
+
+					fnum = Integer.parseInt(f1.getText().toString());
+					
+					
+					query = "SELECT p.seats - f.num_sold FROM ((FlightInfo i INNER JOIN Flight f ON i.flight_id = f.fnum) " +  
+						"INNER JOIN Plane p ON p.id = i.plane_id) WHERE f.fnum = " + fnum + ";";
+						List<List<String>> availableSeats = esql.executeQueryAndReturnResult(query);
+						String s = availableSeats.get(0).get(0);
+						int available = Integer.parseInt(s);
+			
+						if (available > 0){
+							status = 'C';
+							String query3 = "UPDATE Flight SET num_sold = num_sold + 1 WHERE fnum = " + fnum + "; ";
+							esql.executeUpdate(query3);
+						} else{
+							status = 'W';
+						}
+
+						String query2 = "INSERT into Reservation(cid, fid, status) VALUES(" +
+						customerId + ", " + fnum + ", " + "'" + status + "');";
+					
+						
+						esql.executeUpdate(query2);
+						JOptionPane.showMessageDialog(null, 
+							"Booked Flight", "Message",
+							JOptionPane.INFORMATION_MESSAGE);
+			}
+		catch(Exception ex){
+			System.err.println(ex.getMessage());
+		}	
+
 			}
 		});
 		noButton.addActionListener(new ActionListener() {
@@ -707,7 +735,7 @@ public class DBproject {
 				
 					Object[] fields = {" ", "Flight #", f1, "Customer ID", f2};
 				
-					JOptionPane.showConfirmDialog(null, fields, "About Plane ..", JOptionPane.OK_CANCEL_OPTION);
+					JOptionPane.showConfirmDialog(null, fields, "Book Flight", JOptionPane.OK_CANCEL_OPTION);
 
 					fnum = Integer.parseInt(f1.getText().toString());
 					customerId = Integer.parseInt(f2.getText().toString());
@@ -734,7 +762,6 @@ public class DBproject {
 						JOptionPane.showMessageDialog(null, 
 							"Booked Flight", "Message",
 							JOptionPane.INFORMATION_MESSAGE);
-
 			}
 		catch(Exception ex){
 			System.err.println(ex.getMessage());
